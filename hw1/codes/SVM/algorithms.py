@@ -534,8 +534,15 @@ def AdaGrad(fx, gradf, parameter):
     print(68 * '*')
     print('Adaptive Gradient method')
     
+    # Get parameters
+    maxit = parameter['maxit']
+    x0 = parameter['x0']
+
     # Initialize x, alpha, delta (and any other)
-    #### YOUR CODES HERE
+    x = x0
+    alpha = 1
+    delta = 1e-5
+    Q = 0
 
     info = {'itertime': np.zeros(maxit), 'fx': np.zeros(maxit), 'iter': maxit}
 
@@ -546,8 +553,10 @@ def AdaGrad(fx, gradf, parameter):
 
         # Update the next iteration. (main algorithmic steps here!)
         # Use the notation x_next for x_{k+1}, and x for x_{k}, and similar for other variables.
-        
-        #### YOUR CODES HERE
+        grad = gradf(x)
+        Q_next = Q + np.linalg.norm(grad) ** 2
+        H_k = np.math.sqrt(Q_next + delta)
+        x_next = x - alpha * np.dot((1 / H_k) * np.eye(grad.shape[0]), grad)
 
         # Compute error and save data to be plotted later on.
         info['itertime'][iter] = time.clock() - tic
@@ -559,6 +568,7 @@ def AdaGrad(fx, gradf, parameter):
 
         # Prepare the next iteration
         x = x_next
+        Q = Q_next
 
     return x, info
 
@@ -581,20 +591,38 @@ def ADAM(fx, gradf, parameter):
     print(68 * '*')
     print('ADAM')
     
-    # Initialize x, beta1, beta2, alphs, epsilon (and any other)
-    #### YOUR CODES HERE
+    # Get parameters
+    maxit = parameter['maxit']
+    x0 = parameter['x0']
+
+    # Initialize x, beta1, beta2, alpha, epsilon (and any other)
+    x = x0
+    alpha = 0.1
+    beta1 = 0.9
+    beta2 = 0.999
+    epsilon = 1e-8
+
+    # Initialization of momentum and adaptive term
+    m = np.zeros(x.shape[0])
+    v = np.zeros(x.shape[0])
 
     info = {'itertime': np.zeros(maxit), 'fx': np.zeros(maxit), 'iter': maxit}
-
 
     # Main loop.
     for iter in range(maxit):
         tic = time.time()
+        k = iter + 1
 
         # Update the next iteration. (main algorithmic steps here!)
         # Use the notation x_next for x_{k+1}, and x for x_{k}, and similar for other variables.
-        
-        #### YOUR CODES HERE
+        g = gradf(x)
+        m_next = beta1 * m + (1 - beta1) * g
+        v_next = beta2 * v + (1 - beta2) * (g ** 2)
+        m_hat = m_next / (1 - (beta1 ** k))
+        v_hat = v_next / (1 - (beta2 ** k))
+        H = np.sqrt(v_hat) + epsilon
+
+        x_next = x - alpha * m_hat / H
 
         # Compute error and save data to be plotted later on.
         info['itertime'][iter] = time.time() - tic
@@ -606,6 +634,8 @@ def ADAM(fx, gradf, parameter):
 
         # Prepare the next iteration
         x = x_next
+        v = v_next
+        m = m_next
 
     return x, info
 
@@ -617,6 +647,7 @@ def SGD(fx, gradf, parameter):
                maxit      - Maximum number of iterations.
                Lips       - Lipschitz constant for gradient.
                strcnvx    - Strong convexity parameter of f(x).
+               size       - Size of the dataset (needed to give a max to the random integer)
     :param fx:
     :param gradf:
     :param parameter:
@@ -625,21 +656,28 @@ def SGD(fx, gradf, parameter):
     print(68*'*')
     print('Stochastic Gradient Descent')
 
-    # Initialize x and alpha.
-    #### YOUR CODES HERE
+    # Get parameters
+    maxit = parameter['maxit']
+    x0 = parameter['x0']
+    size = parameter['no0functions']
+
+    # Initialize x.
+    x = x0
 
     info = {'itertime': np.zeros(maxit), 'fx': np.zeros(maxit), 'iter': maxit}
-
 
     # Main loop.
 
     for iter in range(maxit):
         tic = time.time()
+        k = iter + 1
+        alpha = 1 / k
 
         # Update the next iteration. (main algorithmic steps here!)
-        # Use the notation x_next for x_{k+1}, and x for x_{k}, and similar for other variables.
-        
-        #### YOUR CODES HERE
+        # Use the notation x_next for x_{k+1}, and x for x_{k}, and similar for other variables
+        np.random.seed()
+        i = np.random.randint(size - 1)
+        x_next = x - alpha * gradf(x, i)
 
         # Compute error and save data to be plotted later on.
         info['itertime'][iter] = time.time() - tic

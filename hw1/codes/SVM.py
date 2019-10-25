@@ -19,15 +19,15 @@ def main():
     # Choose the solvers you want to call
     GD_option = 1
     GDstr_option = 1
-    AGD_option = 1
-    AGDstr_option = 1
-    LSGD_option = 1
-    LSAGD_option = 1
+    AGD_option = 0
+    AGDstr_option = 0
+    LSGD_option = 0
+    LSAGD_option = 0
     AGDR_option = 1
     LSAGDR_option = 1
     AdaGrad_option = 0
-    ADAM_option = 0
-    SGD_option = 0
+    ADAM_option = 1
+    SGD_option = 1
     SAG_option = 0
     SVR_option = 0
 
