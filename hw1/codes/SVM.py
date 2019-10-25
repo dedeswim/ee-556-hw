@@ -17,14 +17,14 @@ def main():
     print(68 * '*')
 
     # Choose the solvers you want to call
-    GD_option = 0
-    GDstr_option = 0
-    AGD_option = 0
-    AGDstr_option = 0
-    LSGD_option = 0
-    LSAGD_option = 0
+    GD_option = 1
+    GDstr_option = 1
+    AGD_option = 1
+    AGDstr_option = 1
+    LSGD_option = 1
+    LSAGD_option = 1
     AGDR_option = 1
-    LSAGDR_option = 0
+    LSAGDR_option = 1
     AdaGrad_option = 0
     ADAM_option = 0
     SGD_option = 0
@@ -91,7 +91,7 @@ def main():
         error['LSAGD'] = compute_error(A_test, b_test, x['LSAGD'])
         print('Error w.r.t 0-1 loss: {}'.format(error['LSAGD']))
 
-    parameter['maxit'] = 100
+    parameter['maxit'] = 500 # Increased from 100 to see the difference with LSAGD
     if LSAGDR_option:
         x['LSAGDR'], info['LSAGDR'] = LSAGDR(fx, gradf, parameter)
         error['LSAGDR'] = compute_error(A_test, b_test, x['LSAGDR'])

@@ -310,7 +310,6 @@ def LSAGD(fx, gradf, parameter):
     maxit = parameter['maxit']
     x0 = parameter['x0']
     Lips = parameter['Lips']
-    strcnvx = parameter['strcnvx']
 
     # Initialize x, y and t and L0.
     x = x0
@@ -330,19 +329,19 @@ def LSAGD(fx, gradf, parameter):
         # Use the notation x_next for x_{k+1}, and x for x_{k}, and similar for other variables.
         Lk_old = Lk_0
         Lk_0 = 1 / 2 * Lk_0
-        d = gradf(x)
+        d = gradf(y)
         
         for i in count():
             factor_left = 1 / ((2 ** i) * Lk_0)
             factor_right = factor_left / 2 # Adds the +1 power at the denominator on th right
-            left = fx(x + factor_left * (-d))
-            right = fx(x) - factor_right * np.linalg.norm(d) ** 2          
+            left = fx(y + factor_left * (-d))
+            right = fx(y) - factor_right * np.linalg.norm(-d) ** 2          
             if left <= right:
                 break
         
         L_k = (2 ** i) * Lk_0
         t_next =  0.5 * (1 + np.math.sqrt(1 + 4 * (L_k / Lk_old) * (t ** 2))) / 2
-        x_next = y - 1 / L_k * gradf(y)
+        x_next = y - 1 / L_k * d
         y = x_next + (t - 1) / t_next * (x_next - x)
 
         # Compute error and save data to be plotted later on.
@@ -378,8 +377,17 @@ def AGDR(fx, gradf, parameter):
     print(68 * '*')
     print('Accelerated Gradient with restart')
 
+    # Get parameters
+    maxit = parameter['maxit']
+    x0 = parameter['x0']
+    Lips = parameter['Lips']
+
     # Initialize x, y, t and find the initial function value (fval).
-    #### YOUR CODES HERE
+    t = 1
+    alpha = 1 / Lips
+    x = x0
+    y = x0
+    fval = fx(x)
 
     info = {'itertime': np.zeros(maxit), 'fx': np.zeros(maxit), 'iter': maxit}
 
@@ -390,8 +398,16 @@ def AGDR(fx, gradf, parameter):
 
         # Update the next iteration. (main algorithmic steps here!)
         # Use the notation x_next for x_{k+1}, and x for x_{k}, and similar for other variables.
+        t_next = (1 + np.math.sqrt(4 * (t ** 2))) / 2
+        x_next = y - alpha * gradf(y)
+        y = x_next + (t - 1) / t_next * (x_next - x)
+        fval_next = fx(x_next)
         
-        #### YOUR CODES HERE
+        if fval_next > fval:
+            y = x
+            t = 1
+            x_next = y - alpha * gradf(y)
+            fval_next = fx(x_next)
 
         # Compute error and save data to be plotted later on.
         info['itertime'][iter] = time.clock() - tic
@@ -404,6 +420,7 @@ def AGDR(fx, gradf, parameter):
         # Prepare the next iteration
         x = x_next
         t = t_next
+        fval = fval_next
 
     return x, info
 
@@ -425,8 +442,18 @@ def LSAGDR(fx, gradf, parameter):
     print(68 * '*')
     print('Accelerated Gradient with line search + restart')
 
-    # Initialize x, y, t and find the initial function value (fval).
-    #### YOUR CODES HERE
+    # Get parameters
+    maxit = parameter['maxit']
+    x0 = parameter['x0']
+    Lips = parameter['Lips']
+
+    # Initialize x, y and t and L0.
+    x = x0
+    y = x
+    t = 1
+    Lk_0 = Lips
+    fval = fx(x)
+
 
     info = {'itertime': np.zeros(maxit), 'fx': np.zeros(maxit), 'iter': maxit}
 
@@ -437,8 +464,43 @@ def LSAGDR(fx, gradf, parameter):
 
         # Update the next iteration. (main algorithmic steps here!)
         # Use the notation x_next for x_{k+1}, and x for x_{k}, and similar for other variables.
+        Lk_old = Lk_0
+        Lk_0 = 1 / 2 * Lk_0
+        d = gradf(y)
         
-        #### YOUR CODES HERE
+        for i in count():
+            factor_left = 1 / ((2 ** i) * Lk_0)
+            factor_right = factor_left / 2 # Adds the +1 power at the denominator on th right
+            left = fx(y + factor_left * (-d))
+            right = fx(y) - factor_right * np.linalg.norm(-d) ** 2          
+            if left <= right:
+                break
+        
+        L_k = (2 ** i) * Lk_0
+        t_next =  0.5 * (1 + np.math.sqrt(1 + 4 * (L_k / Lk_old) * (t ** 2))) / 2
+        x_next = y - 1 / L_k * d
+        y = x_next + (t - 1) / t_next * (x_next - x)
+        fval_next = fx(x_next)
+
+        if fval_next > fval:
+            y = x
+            t = 1
+            d = gradf(y)
+            for i in count():
+                factor_left = 1 / ((2 ** i) * Lk_0)
+                factor_right = factor_left / 2 # Adds the +1 power at the denominator on th right
+                left = fx(y + factor_left * (-d))
+                right = fx(y) - factor_right * np.linalg.norm(-d) ** 2          
+                if left <= right:
+                    break
+            
+            L_k = (2 ** i) * Lk_0
+            t_next =  0.5 * (1 + np.math.sqrt(1 + 4 * (L_k / Lk_old) * (t ** 2))) / 2
+            x_next = y - 1 / L_k * d
+            y = x_next + (t - 1) / t_next * (x_next - x)
+            fval_next = fx(x_next)
+
+
 
         # Compute error and save data to be plotted later on.
         info['itertime'][iter] = time.clock() - tic
@@ -451,6 +513,8 @@ def LSAGDR(fx, gradf, parameter):
         # Prepare the next iteration
         x = x_next
         t = t_next
+        Lk_0 = L_k
+        fval = fval_next
 
     return x, info
 
