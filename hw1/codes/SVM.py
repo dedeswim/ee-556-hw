@@ -17,19 +17,19 @@ def main():
     print(68 * '*')
 
     # Choose the solvers you want to call
-    GD_option = 1
-    GDstr_option = 1
-    AGD_option = 1
-    AGDstr_option = 1
-    LSGD_option = 1
-    LSAGD_option = 1
+    GD_option = 0
+    GDstr_option = 0
+    AGD_option = 0
+    AGDstr_option = 0
+    LSGD_option = 0
+    LSAGD_option = 0
     AGDR_option = 1
-    LSAGDR_option = 1
-    AdaGrad_option = 1
-    ADAM_option = 1
-    SGD_option = 1
-    SAG_option = 1
-    SVR_option = 1
+    LSAGDR_option = 0
+    AdaGrad_option = 0
+    ADAM_option = 0
+    SGD_option = 0
+    SAG_option = 0
+    SVR_option = 0
 
 
     # Set parameters and solve numerically with GD, AGD, AGDR, LSGD, LSAGD, LSAGDR.
@@ -80,7 +80,7 @@ def main():
         error['AGDR'] = compute_error(A_test, b_test, x['AGDR'])
         print('Error w.r.t 0-1 loss: {}'.format(error['AGDR']))
 
-    parameter['maxit'] = 400
+    parameter['maxit'] = 500
     if LSGD_option:
         x['LSGD'], info['LSGD'] = LSGD(fx, gradf, parameter)
         error['LSGD'] = compute_error(A_test, b_test, x['LSGD'])
