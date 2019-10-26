@@ -2,6 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath}
+\usepackage[parfill]{parskip}
 
 \setlength{\parindent}{0in}
 \setlength{\oddsidemargin}{0in}
@@ -10,7 +11,16 @@
 \setlength{\topmargin}{0in}
 \setlength{\headheight}{18pt}
 
-
+\newcommand{\xb}{\mathbf{x}}
+\newcommand{\ab}{\mathbf{a}}
+\newcommand{\abi}{\ab_i}
+\newcommand{\xnorm}{\lVert \mathbf{\xb} \rVert}
+\newcommand{\sumin}{\sum_{i = 1}^n}
+\newcommand{\ellsh}{\ell_{sh}}
+\newcommand{\ax}{\abi^T\xb}
+\newcommand{\atilde}{\mathbf{\tilde{A}}}
+\newcommand{\id}{\mathbf{I}}
+\newcommand{\ones}{\mathbf{1}}
 
 \title{EE-556 Homework 1}
 \author{Edoardo Debenedetti}
@@ -24,10 +34,134 @@
 
 
 \subsection*{Problem 1 - Geometric properties of the objective function $f$}
+
+Assuming $\mu = 0$, the objective function $f$ is the smooth Hinge loss function, defined as:
+
+\begin{equation} \label{def:hinge_loss}
+    f(x) = \ellsh(\xb) + \frac{\lambda}{2} \xnorm ^ 2
+\end{equation}
+
+where
+
+\begin{equation} \label{def:l}
+    \ellsh = \frac{1}{n} \sumin g_i(\xb)
+\end{equation}
+
+and
+
+\begin{equation}
+    g_i(\xb) = \begin{cases} \label{def:g}
+    \frac{1}{2} - b_i(\ax)         & b_i(\ax) < 0 \\
+    \frac{1}{2}(1 - b_i(\ax))^2    & 0 \leq b_i(\ax) \leq 1 \\
+    0                                   & 1 \le b_i(\ax)
+\end{cases}
+\end{equation}
+
 \subsubsection*{(a) Gradient of $f$}
 
 \begin{proof}
-(Type your proof here.)
+Since the gradient is a linear operator:
+
+\begin{equation}
+    \nabla f(\xb) = \nabla \ellsh + \nabla \frac{\lambda}{2} \xnorm ^ 2
+\end{equation}
+
+We can first compute $\nabla \frac{\lambda}{2} \xnorm$:
+
+\begin{gather}
+    \nabla \frac{\lambda}{2} \xnorm ^ 2 =
+    \frac{\lambda}{2} \nabla \xnorm ^ 2 =
+    \frac{\lambda}{2} \nabla \sumin |x_i|^2 = \nonumber
+    \frac{\lambda}{2} \sumin \nabla |x_i|^2 = \\
+     = \frac{\lambda}{2}2\xb =
+    \lambda \xb \label{eq:grad_lambda}
+\end{gather}
+
+Now, let us compute $\nabla \ellsh$:
+
+\begin{equation}
+    \nabla \ellsh = \nabla \frac{1}{n} \sumin g_i(\xb) = \frac{1}{n} \sumin \nabla g_i(\xb)
+\end{equation}
+
+Where $\nabla g_i(\xb)$ is the gradient of \eqref{def:g}
+
+\begin{equation}
+    \nabla g_i(\xb) = \begin{cases}
+        \nabla \left [\frac{1}{2} - b_i(\ax)\right]         & b_i(\ax) < 0 \\
+        \nabla \left [\frac{1}{2}(1 - b_i(\ax))^2\right]    & 0 \leq b_i(\ax) \leq 1 \\
+        \nabla 0                                            & 1 \le b_i(\ax)
+    \end{cases}
+\end{equation}
+
+The case where $1 \le b_i(\ax)$ is trivial, since
+\begin{equation} \label{eq:grad_0_case}
+    \nabla 0 = 0
+\end{equation}
+
+In the case where $b_i(\ax) < 0$:
+
+\begin{equation} \label{eq:grad_linear_case}
+    \nabla \left [\frac{1}{2} - b_i(\ax)\right] = \nabla -b_i(\ax) = -b_i\abi
+\end{equation}
+
+Next, in the case where $0 \leq b_i(\ax) \leq 1$:
+
+\begin{gather}
+    \nabla \left [\frac{1}{2}(1 - b_i(\ax))^2\right] = \nonumber
+    -\frac{1}{2} 2 b_i\abi(1 - b_i(\ax)) = \\ \label{eq:grad_quadr_case}
+    -b_i\abi(1 - b_i(\ax)) = b_i\abi(b_i(\ax) - 1)
+\end{gather}
+
+Finally, combining \eqref{eq:grad_0_case}, \eqref{eq:grad_linear_case} and \eqref{eq:grad_quadr_case}, we get:
+\begin{equation}
+    \nabla g_i(\xb) = \begin{cases}
+            -b_i\abi                & b_i(\ax) < 0 \\
+            b_i\abi(b_i(\ax) - 1)   & 0 \leq b_i(\ax) \leq 1 \\
+            0                       & 1 \le b_i(\ax)
+    \end{cases}
+\end{equation}
+
+Now, let us define, as in the problem statement, $\atilde:=[b_1\ab_1, ..., b_n\ab_n]^T$, and $\id_L, \id_Q$ as the diagonal $n \times n$ matrices such that $\id_L(i,i) = 1$ if $b_i(\ax) < 0$ and $\id_Q(i,i) = 1$ if $0 \leq b_i(\ax) \leq 1$, and $0$ otherwise.
+
+We can observe that $\atilde^T\id$ is the matrix whose $i$-th column is $b_i\abi$. Instead, $\atilde^T\id_L$'s $i$-th columns will be non-zero only in the case where $b_i(\ax) < 0$. Then it is possible to represent this case of $\nabla g_i(\xb)$ where $b_i(\ax) < 0$ as
+
+\begin{equation} \label{eq:grad_matrix_linear_case}
+    -\frac{1}{n}\atilde^T\id_L\ones
+\end{equation}
+
+since multiplying $\atilde^T\id_L$ by $\ones$ will give as result the vector containing the sum of the elements of each column, which means the element-wise sum of the different $j$-th components of the $i$-th gradients relative to each $g_i(\xb)$. Each $j$-th component can be written as
+
+\begin{equation*}
+    \sum_{i \in \{i | b_i(\ax) < 0\}}^{n} a_{i,j} b_j
+\end{equation*}
+
+In a similar fashion, $\atilde^T\id_Q$ is the matrix whose $i$-th column is $\abi b_i$ only if $i$ is such that $0 \leq b_i(\ax) \leq 1$. Moreover, $\atilde \xb$ is the vector such that $[\atilde \xb]_n = \sumin b_i\abi\xb$. Consequently, $\atilde\id_Q[\atilde \xb - 1]$ is the vector whose $j$-th component is
+
+\begin{equation*}
+    [\atilde^T\id_Q[\atilde \xb - 1]]_j =
+    \sum_{i \in \{i | 0 \leq b_i(\ax) \leq 1\}}^{n} b_j a_{i, j} (b_j(\ax) - 1)
+\end{equation*}
+
+if $0 \leq b_i(\ax) \leq 1$. Then, with 
+
+\begin{equation} \label{eq:grad_matrix_quadratic_case}
+    \frac{1}{n}\atilde^T\id_Q[\atilde \xb - 1]
+\end{equation}
+
+we can represent the components of $\nabla g_i(\xb)$ in the aforementioned case.
+
+Combining \eqref{eq:grad_matrix_linear_case} and \eqref{eq:grad_matrix_quadratic_case}, it is proven that
+
+\begin{equation} \label{eq:grad_l_sh}
+    \nabla \ellsh = \frac{1}{n}(\atilde^T\id_Q[\atilde \xb - 1] - \atilde^T\id_L\ones)
+\end{equation}
+
+Finally, combining \eqref{eq:grad_lambda} and \eqref{eq:grad_l_sh} we get the final result
+
+\begin{equation}
+    \nabla f(\xb) = \lambda\xb + \frac{1}{n}\atilde^T\id_Q[\atilde \xb - 1] - \frac{1}{n}\atilde^T\id_L\ones
+\end{equation}
+
 \end{proof}
 
 \subsubsection*{(b) Hessian of $f$}
