@@ -12,6 +12,7 @@
 \setlength{\headheight}{18pt}
 
 \newcommand{\xb}{\mathbf{x}}
+\newcommand{\yb}{\mathbf{y}}
 \newcommand{\ab}{\mathbf{a}}
 \newcommand{\abi}{\ab_i}
 \newcommand{\xnorm}{\lVert \mathbf{\xb} \rVert}
@@ -33,7 +34,7 @@
 
 
 
-\subsection*{Problem 1 - Geometric properties of the objective function $f$}
+\section*{Problem 1 - Geometric properties of the objective function $f$}
 
 Assuming $\mu = 0$, the objective function $f$ is the smooth Hinge loss function, defined as:
 
@@ -57,7 +58,9 @@ and
 \end{cases}
 \end{equation}
 
-\subsubsection*{(a) Gradient of $f$}
+\subsection*{(a) Gradient of $f$}
+
+\subsection*{Computation of the gradient}
 
 \begin{proof}
 Since the gradient is a linear operator:
@@ -135,17 +138,17 @@ since multiplying $\atilde^T\id_L$ by $\ones$ will give as result the vector con
     \sum_{i \in \{i | b_i(\ax) < 0\}}^{n} a_{i,j} b_j
 \end{equation*}
 
-In a similar fashion, $\atilde^T\id_Q$ is the matrix whose $i$-th column is $\abi b_i$ only if $i$ is such that $0 \leq b_i(\ax) \leq 1$. Moreover, $\atilde \xb$ is the vector such that $[\atilde \xb]_n = \sumin b_i\abi\xb$. Consequently, $\atilde\id_Q[\atilde \xb - 1]$ is the vector whose $j$-th component is
+In a similar fashion, $\atilde^T\id_Q$ is the matrix whose $i$-th column is $\abi b_i$ only if $i$ is such that $0 \leq b_i(\ax) \leq 1$. Moreover, $\atilde \xb$ is the vector such that $[\atilde \xb]_n = \sumin b_i\abi\xb$. Consequently, $\atilde\id_Q[\atilde \xb - \ones]$ is the vector whose $j$-th component is
 
 \begin{equation*}
-    [\atilde^T\id_Q[\atilde \xb - 1]]_j =
+    [\atilde^T\id_Q[\atilde \xb - \ones]]_j =
     \sum_{i \in \{i | 0 \leq b_i(\ax) \leq 1\}}^{n} b_j a_{i, j} (b_j(\ax) - 1)
 \end{equation*}
 
 if $0 \leq b_i(\ax) \leq 1$. Then, with 
 
 \begin{equation} \label{eq:grad_matrix_quadratic_case}
-    \frac{1}{n}\atilde^T\id_Q[\atilde \xb - 1]
+    \frac{1}{n}\atilde^T\id_Q[\atilde \xb - \ones]
 \end{equation}
 
 we can represent the components of $\nabla g_i(\xb)$ in the aforementioned case.
@@ -153,25 +156,107 @@ we can represent the components of $\nabla g_i(\xb)$ in the aforementioned case.
 Combining \eqref{eq:grad_matrix_linear_case} and \eqref{eq:grad_matrix_quadratic_case}, it is proven that
 
 \begin{equation} \label{eq:grad_l_sh}
-    \nabla \ellsh = \frac{1}{n}(\atilde^T\id_Q[\atilde \xb - 1] - \atilde^T\id_L\ones)
+    \nabla \ellsh = \frac{1}{n}(\atilde^T\id_Q[\atilde \xb - \ones] - \atilde^T\id_L\ones)
 \end{equation}
 
 Finally, combining \eqref{eq:grad_lambda} and \eqref{eq:grad_l_sh} we get the final result
 
 \begin{equation}
-    \nabla f(\xb) = \lambda\xb + \frac{1}{n}\atilde^T\id_Q[\atilde \xb - 1] - \frac{1}{n}\atilde^T\id_L\ones
+    \nabla f(\xb) = \lambda\xb + \frac{1}{n}\atilde^T\id_Q[\atilde \xb - \ones] - \frac{1}{n}\atilde^T\id_L\ones
 \end{equation}
 
 \end{proof}
 
-\subsubsection*{(b) Hessian of $f$}
+\subsection*{L-Lipschitz continuity of the gradient}
+
 \begin{proof}
-Cool proof
+By definition, a function $f$ has L-Lipschitz continuous gradient if $\exists L < \infty$ such that:
+\begin{equation} \label{eq:l-smooth}
+    \lVert \nabla f(\xb) - \nabla f(\yb) \rVert \leq L \lVert \xb - \yb \rVert
+\end{equation}
+
+So, let us compute the first term for our objective function $f$:
+
+\begin{gather}
+    \lVert \nabla f(\xb) - \nabla f(\yb) \rVert = \nonumber \\
+    \left \lVert \lambda\xb + \frac{1}{n}\atilde^T\id_Q[\atilde \xb - \ones] - \frac{1}{n}\atilde^T\id_L\ones - \left ( \lambda\yb + \frac{1}{n}\atilde^T\id_Q[\atilde \yb - \ones] - \frac{1}{n}\atilde^T\id_L\ones \right ) \right \rVert \label{eq:first-l}
+\end{gather}
+
+We can then observe that the linear parts cancel and that we can take out lambda and expand the expressions in the quadratic region, and then eq. \ref{eq:first-l} becomes:
+
+\begin{equation} \label{eq:second-l}
+        \left \lVert \lambda (\xb - \yb) + \frac{1}{n}\atilde^T\id_Q\atilde\xb - \frac{1}{n}\atilde^T\id_Q\atilde\yb - \frac{1}{n}\atilde^T\id_Q + \frac{1}{n}\atilde^T\id_Q \right\rVert 
+\end{equation}
+
+Again, we can cancel the last two factors, and take out the factor $\frac{1}{n}\atilde^T\id_Q\atilde$. We can also note that since we are now dealing only with elements in the quadratic region and there is no contribution from elements in the linear region, we can consider $\id_Q$ as $\mathbb{I}$ and then we can cancel it. As a consequence, eq. \ref{eq:second-l} becomes:
+
+\begin{gather}
+    \left \lVert \lambda(\xb - \yb) + \frac{1}{n}\atilde^T\atilde (\xb - \yb) \right \rVert = \nonumber \\
+    \left \lVert \left ( \lambda + \frac{1}{n}\atilde^T\atilde \right ) (\xb - \yb) \right \rVert \label{eq:third-l}
+\end{gather}
+
+We now use Cauchy-Schwartz and the triangle inequalities:
+
+\begin{gather}
+    \left \lVert \left ( \lambda + \frac{1}{n}\atilde^T\atilde \right ) (\xb - \yb) \right \rVert \leq
+    \left \lVert \lambda + \frac{1}{n}\atilde^T\atilde \right \rVert \left \lVert \xb - \yb \right \rVert \leq \nonumber \\
+    \leq \left ( \lVert \lambda \rVert + \left \lVert \frac{1}{n}\atilde^T\atilde \right \rVert \right ) \left \lVert \xb - \yb \right \rVert = \nonumber \\
+    \left (\lambda + \frac{1}{n} \lVert \atilde^T \rVert \lVert \atilde \rVert  \right ) \left \lVert \xb - \yb \right \rVert \label{eq:fourth-l}
+\end{gather}
+
+Since $\lambda$ is a scalar, its norm is the number itself. Moreover, since $\frac{1}{n}$ is a scalar as well, we can take it out of the norm. We can now combine equations \ref{eq:l-smooth}, \ref{eq:third-l} and \ref{eq:fourth-l} and get the following result:
+
+\begin{equation}
+    \left ( \lambda + \frac{1}{n} \lVert \atilde^T \rVert \lVert \atilde \rVert \right ) \left \lVert \xb - \yb \right \rVert \leq L \lVert \xb - \yb \rVert
+\end{equation}
+
+if $L = \lambda + \frac{1}{n} \lVert \atilde^T \rVert \lVert \atilde \rVert$. Finally, recalling that $\atilde:=[b_1\ab_1, ..., b_n\ab_n]^T$ where $b_n \in \{-1, 1\}$, we can note that $\lVert \atilde \rVert = \lVert \mathbf{A} \rVert$, since the norm is computed taking in account the absolute value of each entry of a matrix. Then, as a final result,
+
+\begin{equation}
+    f(\xb) \in \mathcal{F}_{L}^{1, 1}
+\end{equation}
+
+with $L = \lambda + \frac{1}{n} \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rVert$.
+
+
 \end{proof}
 
-\subsubsection*{(c) Strong convexity of $f$}
+\subsection*{(b) Hessian of $f$}
 \begin{proof}
-(Type your proof here.)
+Assuming that $\id_L = \mathbb{I}$, we can deduce that $\id_L = \mathbf{0}$, since it would mean that $\forall i \in [1, n], b_i(\abi^T\xb) < 0$. Then some simple computations can show that
+
+\begin{equation}
+    \nabla f(\xb) = \lambda \xb + \frac{1}{n} \atilde^T(\atilde\xb) - \atilde^T
+\end{equation}
+
+We can then compute the Hessian $\nabla^2 f(\xb)$ as $\nabla \cdot \nabla f(\xb)$, that is
+
+\begin{gather}
+    \nabla^2 f(\xb) = \nabla \cdot \nabla f(\xb) = \nabla \cdot \lambda \xb + \nabla \cdot \left [ \frac{1}{n} \atilde^T(\atilde\xb) - \atilde^T \right ] \nonumber = \\
+    = \lambda \nabla \cdot \xb + \frac{1}{n} \atilde^T (\atilde \nabla \cdot \xb) = \nonumber \\
+    = \lambda \mathbb{I} + \frac{1}{n} \atilde^T \atilde
+\end{gather}
+
+Hence, $\nabla^2 f(\xb) = \lambda \mathbb{I} + \frac{1}{n} \atilde^T \atilde$. Moreover, $f(\xb)$ is twice differentiable because $\nabla ^2 f(\xb)$ is continuous over $\mathbb{R}^p$
+
+\end{proof}
+
+\subsection*{(c) Strong convexity of $f$}
+\begin{proof}
+First, let use recall that $f(\xb) = \ellsh(\xb) + \frac{\lambda}{2} \xnorm^2$ and that a function $f(\xb)$ is $\mu$-strongly convex iff, given $h(\xb) = f(\xb) - \frac{\mu}{2} \xnorm^2$, $h(\xb)$ is convex. In the case of the smooth Hinge loss function,
+
+\begin{equation}
+    h(\xb) = \ellsh + \frac{\lambda}{2} \xnorm^2 - \frac{\mu}{2} \xnorm^2
+\end{equation}
+
+Now, setting $\mu = \lambda$, we get that $h(\xb) = \ellsh(x)$. We know that $\ellsh$ is convex, and then $h(\xb)$ us convex as well. Thus,
+
+\begin{equation}
+    f(\xb) \in \mathcal{F}_{L, \mu}^{2, 1}
+\end{equation}
+
+with $L = \lambda + \frac{1}{n} \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rVert$ and $\mu = \lambda$.
+
 \end{proof}
 
 
