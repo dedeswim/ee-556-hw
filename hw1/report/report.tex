@@ -3,15 +3,18 @@
 \usepackage[utf8]{inputenc}
 \usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath,graphicx}
 \usepackage[parfill]{parskip}
+\usepackage[export]{adjustbox}
+\usepackage[justification=centering]{caption}
 
 \DeclareMathAlphabet{\mymathbb}{U}{BOONDOX-ds}{m}{n}
 
 \setlength{\parindent}{0in}
 \setlength{\oddsidemargin}{0in}
-\setlength{\textwidth}{6.5in}
-\setlength{\textheight}{8.8in}
-\setlength{\topmargin}{0in}
-\setlength{\headheight}{18pt}
+\setlength{\textwidth}{17cm}
+\setlength{\textheight}{22cm}
+\setlength{\topmargin}{0cm}
+\setlength{\headheight}{0pt}
+\setlength{\footskip}{30pt}
 
 \newcommand{\xb}{\mathbf{x}}
 \newcommand{\yb}{\mathbf{y}}
@@ -24,6 +27,7 @@
 \newcommand{\atilde}{\mathbf{\tilde{A}}}
 \newcommand{\id}{\mathbf{I}}
 \newcommand{\ones}{\mathbf{1}}
+\newcommand{\figh}{6cm}
 
 \title{EE-556 Homework 1}
 \author{Edoardo Debenedetti}
@@ -263,11 +267,54 @@ with $L = \lambda + \frac{1}{n} \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rV
 
 \section*{First order methods for linear SVM}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=10cm]{hw1/codes/fig_ex1.pdf}
-    \caption{Caption}
-    \label{fig:my_label}
+\begin{figure}[!hbt]
+\centering
+\minipage{0.50\textwidth}
+\centering
+    \adjincludegraphics[height=\figh,trim={0 0 {.5\width} 0},clip]{hw1/report/img/gd_agd_str.pdf}
+    \caption{(Accelerated) Gradient Descent}
+    \label{fig:gd_agd_str}
+\endminipage\hfill
+\minipage{0.50\textwidth}
+\centering
+\adjincludegraphics[height=\figh,trim={0 0 {.5\width} 0},clip]{hw1/report/img/gd_lsgd_lsagd.pdf}
+    \caption{Line Search methods}
+    \label{fig:gd_lsgd_lsagd}
+\endminipage\hfill
+\end{figure}
+
+\begin{figure}[!hbt]
+\centering
+\minipage{0.50\textwidth}
+\centering
+    \adjincludegraphics[height=\figh,trim={0 0 {.5\width} 0},clip]{hw1/report/img/agd_agdr.pdf}
+    \caption{Accelerated GD with restart}
+    \label{fig:agd_agdr}
+\endminipage\hfill
+\minipage{0.50\textwidth}
+\centering
+\adjincludegraphics[height=\figh,trim={0 0 {.5\width} 0},clip]{hw1/report/img/lsagd_lsagdr.pdf}
+    \caption{Line Search AGD with restart}
+    \label{fig:lsagd_lsagdr}
+\endminipage\hfill
+\end{figure}
+
+\section*{Stochastic gradient methods for SVM}
+
+\begin{figure}[!hbt]
+\centering
+\minipage{0.50\textwidth}
+\centering
+    \adjincludegraphics[height=\figh,trim={0 0 {.5\width} 0},clip]{hw1/report/img/adaptive.pdf}
+    \caption{Adaptive methods}
+    \label{fig:adaptive}
+\endminipage\hfill
+\minipage{0.50\textwidth}
+\centering
+\adjincludegraphics[height=\figh,trim={{.5\width} 0 0 0},clip]{hw1/report/img/stochastic.pdf}
+    \caption{Stochastic Gradient methods}
+    \label{fig:stochastic}
+\endminipage\hfill
 \end{figure}
 
 \end{document}
