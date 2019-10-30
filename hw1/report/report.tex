@@ -1,8 +1,10 @@
 \documentclass[12pt]{article}
 
 \usepackage[utf8]{inputenc}
-\usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath}
+\usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath,graphicx}
 \usepackage[parfill]{parskip}
+
+\DeclareMathAlphabet{\mymathbb}{U}{BOONDOX-ds}{m}{n}
 
 \setlength{\parindent}{0in}
 \setlength{\oddsidemargin}{0in}
@@ -36,7 +38,7 @@
 
 \section*{Problem 1 - Geometric properties of the objective function $f$}
 
-Assuming $\mu = 0$, the objective function $f$ is the smooth Hinge loss function, defined as:
+Assuming $\mu = 0$, the smooth Hinge loss function $f$ becomes:
 
 \begin{equation} \label{def:hinge_loss}
     f(x) = \ellsh(\xb) + \frac{\lambda}{2} \xnorm ^ 2
@@ -75,7 +77,7 @@ We can first compute $\nabla \frac{\lambda}{2} \xnorm$:
     \nabla \frac{\lambda}{2} \xnorm ^ 2 =
     \frac{\lambda}{2} \nabla \xnorm ^ 2 =
     \frac{\lambda}{2} \nabla \sumin |x_i|^2 = \nonumber
-    \frac{\lambda}{2} \sumin \nabla |x_i|^2 = \\
+    \frac{\lambda}{2} \sumin \nabla x_i^2 = \\
      = \frac{\lambda}{2}2\xb =
     \lambda \xb \label{eq:grad_lambda}
 \end{gather}
@@ -104,7 +106,7 @@ The case where $1 \le b_i(\ax)$ is trivial, since
 In the case where $b_i(\ax) < 0$:
 
 \begin{equation} \label{eq:grad_linear_case}
-    \nabla \left [\frac{1}{2} - b_i(\ax)\right] = \nabla -b_i(\ax) = -b_i\abi
+    \nabla \left [\frac{1}{2} - b_i(\ax)\right] = \nabla (-b_i(\ax)) = -b_i\abi
 \end{equation}
 
 Next, in the case where $0 \leq b_i(\ax) \leq 1$:
@@ -135,14 +137,14 @@ We can observe that $\atilde^T\id$ is the matrix whose $i$-th column is $b_i\abi
 since multiplying $\atilde^T\id_L$ by $\ones$ will give as result the vector containing the sum of the elements of each column, which means the element-wise sum of the different $j$-th components of the $i$-th gradients relative to each $g_i(\xb)$. Each $j$-th component can be written as
 
 \begin{equation*}
-    \sum_{i \in \{i | b_i(\ax) < 0\}}^{n} a_{i,j} b_j
+    \sum_{i \ \in \ \{i \ | \ b_i(\ax) \ < \ 0\}}^{n} a_{i,j} b_j
 \end{equation*}
 
 In a similar fashion, $\atilde^T\id_Q$ is the matrix whose $i$-th column is $\abi b_i$ only if $i$ is such that $0 \leq b_i(\ax) \leq 1$. Moreover, $\atilde \xb$ is the vector such that $[\atilde \xb]_n = \sumin b_i\abi\xb$. Consequently, $\atilde\id_Q[\atilde \xb - \ones]$ is the vector whose $j$-th component is
 
 \begin{equation*}
     [\atilde^T\id_Q[\atilde \xb - \ones]]_j =
-    \sum_{i \in \{i | 0 \leq b_i(\ax) \leq 1\}}^{n} b_j a_{i, j} (b_j(\ax) - 1)
+    \sum_{i \ \in \ \{i \ | \ 0 \ \leq \ b_i(\ax) \ \leq \ 1\}}^{n} b_j a_{i, j} (b_j(\ax) - 1)
 \end{equation*}
 
 if $0 \leq b_i(\ax) \leq 1$. Then, with 
@@ -175,14 +177,14 @@ By definition, a function $f$ has L-Lipschitz continuous gradient if $\exists L 
     \lVert \nabla f(\xb) - \nabla f(\yb) \rVert \leq L \lVert \xb - \yb \rVert
 \end{equation}
 
-So, let us compute the first term for our objective function $f$:
+So, let us compute the left term of the inequality for our objective function $f$:
 
 \begin{gather}
     \lVert \nabla f(\xb) - \nabla f(\yb) \rVert = \nonumber \\
     \left \lVert \lambda\xb + \frac{1}{n}\atilde^T\id_Q[\atilde \xb - \ones] - \frac{1}{n}\atilde^T\id_L\ones - \left ( \lambda\yb + \frac{1}{n}\atilde^T\id_Q[\atilde \yb - \ones] - \frac{1}{n}\atilde^T\id_L\ones \right ) \right \rVert \label{eq:first-l}
 \end{gather}
 
-We can then observe that the linear parts cancel and that we can take out lambda and expand the expressions in the quadratic region, and then eq. \ref{eq:first-l} becomes:
+We can then observe that the linear parts cancel, that we can take out lambda and expand the expressions in the quadratic region. Eq. \ref{eq:first-l} becomes:
 
 \begin{equation} \label{eq:second-l}
         \left \lVert \lambda (\xb - \yb) + \frac{1}{n}\atilde^T\id_Q\atilde\xb - \frac{1}{n}\atilde^T\id_Q\atilde\yb - \frac{1}{n}\atilde^T\id_Q + \frac{1}{n}\atilde^T\id_Q \right\rVert 
@@ -195,7 +197,7 @@ Again, we can cancel the last two factors, and take out the factor $\frac{1}{n}\
     \left \lVert \left ( \lambda + \frac{1}{n}\atilde^T\atilde \right ) (\xb - \yb) \right \rVert \label{eq:third-l}
 \end{gather}
 
-We now use Cauchy-Schwartz and the triangle inequalities:
+We can now use Cauchy-Schwartz and triangle inequalities:
 
 \begin{gather}
     \left \lVert \left ( \lambda + \frac{1}{n}\atilde^T\atilde \right ) (\xb - \yb) \right \rVert \leq
@@ -210,7 +212,7 @@ Since $\lambda$ is a scalar, its norm is the number itself. Moreover, since $\fr
     \left ( \lambda + \frac{1}{n} \lVert \atilde^T \rVert \lVert \atilde \rVert \right ) \left \lVert \xb - \yb \right \rVert \leq L \lVert \xb - \yb \rVert
 \end{equation}
 
-if $L = \lambda + \frac{1}{n} \lVert \atilde^T \rVert \lVert \atilde \rVert$. Finally, recalling that $\atilde:=[b_1\ab_1, ..., b_n\ab_n]^T$ where $b_n \in \{-1, 1\}$, we can note that $\lVert \atilde \rVert = \lVert \mathbf{A} \rVert$, since the norm is computed taking in account the absolute value of each entry of a matrix. Then, as a final result,
+if $L = \lambda + \frac{1}{n} \lVert \atilde^T \rVert \lVert \atilde \rVert$. Finally, recalling that $\atilde:=[b_1\ab_1, ..., b_n\ab_n]^T$ where $b_n \in \{-1, 1\}$, we can note that $\lVert \atilde \rVert = \lVert \mathbf{A} \rVert$, since the norm is computed taking in account the absolute value of each entry of a matrix. Hence, as a final result,
 
 \begin{equation}
     f(\xb) \in \mathcal{F}_{L}^{1, 1}
@@ -223,7 +225,7 @@ with $L = \lambda + \frac{1}{n} \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rV
 
 \subsection*{(b) Hessian of $f$}
 \begin{proof}
-Assuming that $\id_L = \mathbb{I}$, we can deduce that $\id_L = \mathbf{0}$, since it would mean that $\forall i \in [1, n], b_i(\abi^T\xb) < 0$. Then some simple computations can show that
+Assuming that $\id_L = \mathbb{I}$, we can deduce that $\id_L = \mymathbb{0}$, since it would mean that $\forall i \in [1,\ n], \ b_i(\abi^T\xb) \ < \ 0$. Then some simple computations can show that
 
 \begin{equation}
     \nabla f(\xb) = \lambda \xb + \frac{1}{n} \atilde^T(\atilde\xb) - \atilde^T
@@ -259,11 +261,13 @@ with $L = \lambda + \frac{1}{n} \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rV
 
 \end{proof}
 
+\section*{First order methods for linear SVM}
 
-
-
-
-
-
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{hw1/codes/fig_ex1.pdf}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
 
 \end{document}
