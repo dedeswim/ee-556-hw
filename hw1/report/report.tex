@@ -28,6 +28,12 @@
 \newcommand{\id}{\mathbf{I}}
 \newcommand{\ones}{\mathbf{1}}
 \newcommand{\figh}{6cm}
+\newcommand{\gradik}{\nabla f_{ik}}
+\newcommand{\fracn}{\frac{1}{n}}
+\newcommand{\linearpred}{b_i(\ax) < 0}
+\newcommand{\quadrpred}{0 \leq b_i(\ax) \leq 1}
+\newcommand{\linearone}{\ones_{\{\linearpred\}}}
+\newcommand{\quadrone}{\ones_{\{\quadrpred\}}}
 
 \title{EE-556 Homework 1}
 \author{Edoardo Debenedetti}
@@ -36,11 +42,7 @@
 
 \maketitle
 
-\vspace{0.5in}
-
-
-
-\section*{Problem 1 - Geometric properties of the objective function $f$}
+\section{Geometric properties of the objective function $f$}
 
 Assuming $\mu = 0$, the smooth Hinge loss function $f$ becomes:
 
@@ -51,22 +53,22 @@ Assuming $\mu = 0$, the smooth Hinge loss function $f$ becomes:
 where
 
 \begin{equation} \label{def:l}
-    \ellsh = \frac{1}{n} \sumin g_i(\xb)
+    \ellsh = \fracn \sumin g_i(\xb)
 \end{equation}
 
 and
 
 \begin{equation}
     g_i(\xb) = \begin{cases} \label{def:g}
-    \frac{1}{2} - b_i(\ax)         & b_i(\ax) < 0 \\
-    \frac{1}{2}(1 - b_i(\ax))^2    & 0 \leq b_i(\ax) \leq 1 \\
+    \frac{1}{2} - b_i(\ax)         & \linearpred \\
+    \frac{1}{2}(1 - b_i(\ax))^2    & \quadrpred \\
     0                                   & 1 \le b_i(\ax)
 \end{cases}
 \end{equation}
 
 \subsection*{(a) Gradient of $f$}
 
-\subsection*{Computation of the gradient}
+\subsubsection*{Computation of the gradient}
 
 \begin{proof}
 Since the gradient is a linear operator:
@@ -89,15 +91,15 @@ We can first compute $\nabla \frac{\lambda}{2} \xnorm$:
 Now, let us compute $\nabla \ellsh$:
 
 \begin{equation}
-    \nabla \ellsh = \nabla \frac{1}{n} \sumin g_i(\xb) = \frac{1}{n} \sumin \nabla g_i(\xb)
+    \nabla \ellsh = \nabla \fracn \sumin g_i(\xb) = \fracn \sumin \nabla g_i(\xb)
 \end{equation}
 
 Where $\nabla g_i(\xb)$ is the gradient of \eqref{def:g}
 
 \begin{equation}
     \nabla g_i(\xb) = \begin{cases}
-        \nabla \left [\frac{1}{2} - b_i(\ax)\right]         & b_i(\ax) < 0 \\
-        \nabla \left [\frac{1}{2}(1 - b_i(\ax))^2\right]    & 0 \leq b_i(\ax) \leq 1 \\
+        \nabla \left [\frac{1}{2} - b_i(\ax)\right]         & \linearpred \\
+        \nabla \left [\frac{1}{2}(1 - b_i(\ax))^2\right]    & \quadrpred \\
         \nabla 0                                            & 1 \le b_i(\ax)
     \end{cases}
 \end{equation}
@@ -107,13 +109,13 @@ The case where $1 \le b_i(\ax)$ is trivial, since
     \nabla 0 = 0
 \end{equation}
 
-In the case where $b_i(\ax) < 0$:
+In the case where $\linearpred$:
 
 \begin{equation} \label{eq:grad_linear_case}
     \nabla \left [\frac{1}{2} - b_i(\ax)\right] = \nabla (-b_i(\ax)) = -b_i\abi
 \end{equation}
 
-Next, in the case where $0 \leq b_i(\ax) \leq 1$:
+Next, in the case where $\quadrpred$:
 
 \begin{gather}
     \nabla \left [\frac{1}{2}(1 - b_i(\ax))^2\right] = \nonumber
@@ -124,18 +126,18 @@ Next, in the case where $0 \leq b_i(\ax) \leq 1$:
 Finally, combining \eqref{eq:grad_0_case}, \eqref{eq:grad_linear_case} and \eqref{eq:grad_quadr_case}, we get:
 \begin{equation}
     \nabla g_i(\xb) = \begin{cases}
-            -b_i\abi                & b_i(\ax) < 0 \\
-            b_i\abi(b_i(\ax) - 1)   & 0 \leq b_i(\ax) \leq 1 \\
+            -b_i\abi                & \linearpred \\
+            b_i\abi(b_i(\ax) - 1)   & \quadrpred \\
             0                       & 1 \le b_i(\ax)
     \end{cases}
 \end{equation}
 
-Now, let us define, as in the problem statement, $\atilde:=[b_1\ab_1, ..., b_n\ab_n]^T$, and $\id_L, \id_Q$ as the diagonal $n \times n$ matrices such that $\id_L(i,i) = 1$ if $b_i(\ax) < 0$ and $\id_Q(i,i) = 1$ if $0 \leq b_i(\ax) \leq 1$, and $0$ otherwise.
+Now, let us define, as in the problem statement, $\atilde:=[b_1\ab_1, ..., b_n\ab_n]^T$, and $\id_L, \id_Q$ as the diagonal $n \times n$ matrices such that $\id_L(i,i) = 1$ if $\linearpred$ and $\id_Q(i,i) = 1$ if $\quadrpred$, and $0$ otherwise.
 
-We can observe that $\atilde^T\id$ is the matrix whose $i$-th column is $b_i\abi$. Instead, $\atilde^T\id_L$'s $i$-th columns will be non-zero only in the case where $b_i(\ax) < 0$. Then it is possible to represent this case of $\nabla g_i(\xb)$ where $b_i(\ax) < 0$ as
+We can observe that $\atilde^T\id$ is the matrix whose $i$-th column is $b_i\abi$. Instead, $\atilde^T\id_L$'s $i$-th columns will be non-zero only in the case where $\linearpred$. Then it is possible to represent this case of $\nabla g_i(\xb)$ where $\linearpred$ as
 
 \begin{equation} \label{eq:grad_matrix_linear_case}
-    -\frac{1}{n}\atilde^T\id_L\ones
+    -\fracn\atilde^T\id_L\ones
 \end{equation}
 
 since multiplying $\atilde^T\id_L$ by $\ones$ will give as result the vector containing the sum of the elements of each column, which means the element-wise sum of the different $j$-th components of the $i$-th gradients relative to each $g_i(\xb)$. Each $j$-th component can be written as
@@ -144,17 +146,17 @@ since multiplying $\atilde^T\id_L$ by $\ones$ will give as result the vector con
     \sum_{i \ \in \ \{i \ | \ b_i(\ax) \ < \ 0\}}^{n} a_{i,j} b_j
 \end{equation*}
 
-In a similar fashion, $\atilde^T\id_Q$ is the matrix whose $i$-th column is $\abi b_i$ only if $i$ is such that $0 \leq b_i(\ax) \leq 1$. Moreover, $\atilde \xb$ is the vector such that $[\atilde \xb]_n = \sumin b_i\abi\xb$. Consequently, $\atilde\id_Q[\atilde \xb - \ones]$ is the vector whose $j$-th component is
+In a similar fashion, $\atilde^T\id_Q$ is the matrix whose $i$-th column is $\abi b_i$ only if $i$ is such that $\quadrpred$. Moreover, $\atilde \xb$ is the vector such that $[\atilde \xb]_n = \sumin b_i\abi\xb$. Consequently, $\atilde\id_Q[\atilde \xb - \ones]$ is the vector whose $j$-th component is
 
 \begin{equation*}
     [\atilde^T\id_Q[\atilde \xb - \ones]]_j =
     \sum_{i \ \in \ \{i \ | \ 0 \ \leq \ b_i(\ax) \ \leq \ 1\}}^{n} b_j a_{i, j} (b_j(\ax) - 1)
 \end{equation*}
 
-if $0 \leq b_i(\ax) \leq 1$. Then, with 
+if $\quadrpred$. Then, with 
 
 \begin{equation} \label{eq:grad_matrix_quadratic_case}
-    \frac{1}{n}\atilde^T\id_Q[\atilde \xb - \ones]
+    \fracn\atilde^T\id_Q[\atilde \xb - \ones]
 \end{equation}
 
 we can represent the components of $\nabla g_i(\xb)$ in the aforementioned case.
@@ -162,18 +164,18 @@ we can represent the components of $\nabla g_i(\xb)$ in the aforementioned case.
 Combining \eqref{eq:grad_matrix_linear_case} and \eqref{eq:grad_matrix_quadratic_case}, it is proven that
 
 \begin{equation} \label{eq:grad_l_sh}
-    \nabla \ellsh = \frac{1}{n}(\atilde^T\id_Q[\atilde \xb - \ones] - \atilde^T\id_L\ones)
+    \nabla \ellsh = \fracn(\atilde^T\id_Q[\atilde \xb - \ones] - \atilde^T\id_L\ones)
 \end{equation}
 
 Finally, combining \eqref{eq:grad_lambda} and \eqref{eq:grad_l_sh} we get the final result
 
 \begin{equation}
-    \nabla f(\xb) = \lambda\xb + \frac{1}{n}\atilde^T\id_Q[\atilde \xb - \ones] - \frac{1}{n}\atilde^T\id_L\ones
+    \nabla f(\xb) = \lambda\xb + \fracn\atilde^T\id_Q[\atilde \xb - \ones] - \fracn\atilde^T\id_L\ones
 \end{equation}
 
 \end{proof}
 
-\subsection*{L-Lipschitz continuity of the gradient}
+\subsubsection*{L-Lipschitz continuity of the gradient}
 
 \begin{proof}
 By definition, a function $f$ has L-Lipschitz continuous gradient if $\exists L < \infty$ such that:
@@ -185,44 +187,44 @@ So, let us compute the left term of the inequality for our objective function $f
 
 \begin{gather}
     \lVert \nabla f(\xb) - \nabla f(\yb) \rVert = \nonumber \\
-    \left \lVert \lambda\xb + \frac{1}{n}\atilde^T\id_Q[\atilde \xb - \ones] - \frac{1}{n}\atilde^T\id_L\ones - \left ( \lambda\yb + \frac{1}{n}\atilde^T\id_Q[\atilde \yb - \ones] - \frac{1}{n}\atilde^T\id_L\ones \right ) \right \rVert \label{eq:first-l}
+    \left \lVert \lambda\xb + \fracn\atilde^T\id_Q[\atilde \xb - \ones] - \fracn\atilde^T\id_L\ones - \left ( \lambda\yb + \fracn\atilde^T\id_Q[\atilde \yb - \ones] - \fracn\atilde^T\id_L\ones \right ) \right \rVert \label{eq:first-l}
 \end{gather}
 
-We can then observe that the linear parts cancel, that we can take out lambda and expand the expressions in the quadratic region. Eq. \ref{eq:first-l} becomes:
+We can then observe that the linear parts cancel, that we can take out lambda and expand the expressions in the quadratic region. Eq. \eqref{eq:first-l} becomes:
 
 \begin{equation} \label{eq:second-l}
-        \left \lVert \lambda (\xb - \yb) + \frac{1}{n}\atilde^T\id_Q\atilde\xb - \frac{1}{n}\atilde^T\id_Q\atilde\yb - \frac{1}{n}\atilde^T\id_Q + \frac{1}{n}\atilde^T\id_Q \right\rVert 
+        \left \lVert \lambda (\xb - \yb) + \fracn\atilde^T\id_Q\atilde\xb - \fracn\atilde^T\id_Q\atilde\yb - \fracn\atilde^T\id_Q + \fracn\atilde^T\id_Q \right\rVert 
 \end{equation}
 
-Again, we can cancel the last two factors, and take out the factor $\frac{1}{n}\atilde^T\id_Q\atilde$. We can also note that since we are now dealing only with elements in the quadratic region and there is no contribution from elements in the linear region, we can consider $\id_Q$ as $\mathbb{I}$ and then we can cancel it. As a consequence, eq. \ref{eq:second-l} becomes:
+Again, we can cancel the last two factors, and take out the factor $\fracn\atilde^T\id_Q\atilde$. We can also note that since we are now dealing only with elements in the quadratic region and there is no contribution from elements in the linear region, we can consider $\id_Q$ as $\mathbb{I}$ and then we can cancel it. As a consequence, eq. \eqref{eq:second-l} becomes:
 
 \begin{gather}
-    \left \lVert \lambda(\xb - \yb) + \frac{1}{n}\atilde^T\atilde (\xb - \yb) \right \rVert = \nonumber \\
-    \left \lVert \left ( \lambda + \frac{1}{n}\atilde^T\atilde \right ) (\xb - \yb) \right \rVert \label{eq:third-l}
+    \left \lVert \lambda(\xb - \yb) + \fracn\atilde^T\atilde (\xb - \yb) \right \rVert = \nonumber \\
+    \left \lVert \left ( \lambda + \fracn\atilde^T\atilde \right ) (\xb - \yb) \right \rVert \label{eq:third-l}
 \end{gather}
 
 We can now use Cauchy-Schwartz and triangle inequalities:
 
 \begin{gather}
-    \left \lVert \left ( \lambda + \frac{1}{n}\atilde^T\atilde \right ) (\xb - \yb) \right \rVert \leq
-    \left \lVert \lambda + \frac{1}{n}\atilde^T\atilde \right \rVert \left \lVert \xb - \yb \right \rVert \leq \nonumber \\
-    \leq \left ( \lVert \lambda \rVert + \left \lVert \frac{1}{n}\atilde^T\atilde \right \rVert \right ) \left \lVert \xb - \yb \right \rVert = \nonumber \\
-    \left (\lambda + \frac{1}{n} \lVert \atilde^T \rVert \lVert \atilde \rVert  \right ) \left \lVert \xb - \yb \right \rVert \label{eq:fourth-l}
+    \left \lVert \left ( \lambda + \fracn\atilde^T\atilde \right ) (\xb - \yb) \right \rVert \leq
+    \left \lVert \lambda + \fracn\atilde^T\atilde \right \rVert \left \lVert \xb - \yb \right \rVert \leq \nonumber \\
+    \leq \left ( \lVert \lambda \rVert + \left \lVert \fracn\atilde^T\atilde \right \rVert \right ) \left \lVert \xb - \yb \right \rVert = \nonumber \\
+    \left (\lambda + \fracn \lVert \atilde^T \rVert \lVert \atilde \rVert  \right ) \left \lVert \xb - \yb \right \rVert \label{eq:fourth-l}
 \end{gather}
 
-Since $\lambda$ is a scalar, its norm is the number itself. Moreover, since $\frac{1}{n}$ is a scalar as well, we can take it out of the norm. We can now combine equations \ref{eq:l-smooth}, \ref{eq:third-l} and \ref{eq:fourth-l} and get the following result:
+Since $\lambda$ is a scalar, its norm is the number itself. Moreover, since $\fracn$ is a scalar as well, we can take it out of the norm. We can now combine equations \eqref{eq:l-smooth}, \eqref{eq:third-l} and \eqref{eq:fourth-l} and get the following result:
 
 \begin{equation}
-    \left ( \lambda + \frac{1}{n} \lVert \atilde^T \rVert \lVert \atilde \rVert \right ) \left \lVert \xb - \yb \right \rVert \leq L \lVert \xb - \yb \rVert
+    \left ( \lambda + \fracn \lVert \atilde^T \rVert \lVert \atilde \rVert \right ) \left \lVert \xb - \yb \right \rVert \leq L \lVert \xb - \yb \rVert
 \end{equation}
 
-if $L = \lambda + \frac{1}{n} \lVert \atilde^T \rVert \lVert \atilde \rVert$. Finally, recalling that $\atilde:=[b_1\ab_1, ..., b_n\ab_n]^T$ where $b_n \in \{-1, 1\}$, we can note that $\lVert \atilde \rVert = \lVert \mathbf{A} \rVert$, since the norm is computed taking in account the absolute value of each entry of a matrix. Hence, as a final result,
+if $L = \lambda + \fracn \lVert \atilde^T \rVert \lVert \atilde \rVert$. Finally, recalling that $\atilde:=[b_1\ab_1, ..., b_n\ab_n]^T$ where $b_n \in \{-1, 1\}$, we can note that $\lVert \atilde \rVert = \lVert \mathbf{A} \rVert$, since the norm is computed taking in account the absolute value of each entry of a matrix. Hence, as a final result,
 
 \begin{equation}
     f(\xb) \in \mathcal{F}_{L}^{1, 1}
 \end{equation}
 
-with $L = \lambda + \frac{1}{n} \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rVert$.
+with $L = \lambda + \fracn \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rVert$.
 
 
 \end{proof}
@@ -232,18 +234,18 @@ with $L = \lambda + \frac{1}{n} \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rV
 Assuming that $\id_L = \mathbb{I}$, we can deduce that $\id_L = \mymathbb{0}$, since it would mean that $\forall i \in [1,\ n], \ b_i(\abi^T\xb) \ < \ 0$. Then some simple computations can show that
 
 \begin{equation}
-    \nabla f(\xb) = \lambda \xb + \frac{1}{n} \atilde^T(\atilde\xb) - \atilde^T
+    \nabla f(\xb) = \lambda \xb + \fracn \atilde^T(\atilde\xb) - \atilde^T
 \end{equation}
 
 We can then compute the Hessian $\nabla^2 f(\xb)$ as $\nabla \cdot \nabla f(\xb)$, that is
 
 \begin{gather}
-    \nabla^2 f(\xb) = \nabla \cdot \nabla f(\xb) = \nabla \cdot \lambda \xb + \nabla \cdot \left [ \frac{1}{n} \atilde^T(\atilde\xb) - \atilde^T \right ] \nonumber = \\
-    = \lambda \nabla \cdot \xb + \frac{1}{n} \atilde^T (\atilde \nabla \cdot \xb) = \nonumber \\
-    = \lambda \mathbb{I} + \frac{1}{n} \atilde^T \atilde
+    \nabla^2 f(\xb) = \nabla \cdot \nabla f(\xb) = \nabla \cdot \lambda \xb + \nabla \cdot \left [ \fracn \atilde^T(\atilde\xb) - \atilde^T \right ] \nonumber = \\
+    = \lambda \nabla \cdot \xb + \fracn \atilde^T (\atilde \nabla \cdot \xb) = \nonumber \\
+    = \lambda \mathbb{I} + \fracn \atilde^T \atilde
 \end{gather}
 
-Hence, $\nabla^2 f(\xb) = \lambda \mathbb{I} + \frac{1}{n} \atilde^T \atilde$. Moreover, $f(\xb)$ is twice differentiable because $\nabla ^2 f(\xb)$ is continuous over $\mathbb{R}^p$
+Hence, $\nabla^2 f(\xb) = \lambda \mathbb{I} + \fracn \atilde^T \atilde$. Moreover, $f(\xb)$ is twice differentiable because $\nabla ^2 f(\xb)$ is continuous over $\mathbb{R}^p$
 
 \end{proof}
 
@@ -261,11 +263,21 @@ Now, setting $\mu = \lambda$, we get that $h(\xb) = \ellsh(x)$. We know that $\e
     f(\xb) \in \mathcal{F}_{L, \mu}^{2, 1}
 \end{equation}
 
-with $L = \lambda + \frac{1}{n} \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rVert$ and $\mu = \lambda$.
+with $L = \lambda + \fracn \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rVert$ and $\mu = \lambda$.
 
 \end{proof}
 
-\section*{First order methods for linear SVM}
+\section{First order methods for linear SVM}
+\subsection*{Methods implementations}
+\subsubsection*{(Accelerated) Gradient Descents}
+From figure \ref{fig:gd_agd_str} we can see that:
+\begin{enumerate}
+    \item Assuming strong convexity for both Gradient Descent (GDstr) and Accelerated Gradient Descent (AGDstr) gives a significant advantage in the long run (i.e. after $10^3$ iterations.
+    \item Accelerated (AGD and AGDstr) methods are quite unstable and have several jumps.
+\end{enumerate}
+
+\subsubsection*{Line Search Methods}
+From figure \ref{fig:lsagd_lsagdr} we can see that line-search to adapt the step-size to the local geometry makes the loss functions converge with a higher rate, both with Gradient Descent (LSGD) and Accelerated Gradient Descent (LSAGD). However, we should keep in mind that line-search is computationally expensive and then makes each iteration slower.
 
 \begin{figure}[!hbt]
 \centering
@@ -283,37 +295,120 @@ with $L = \lambda + \frac{1}{n} \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rV
 \endminipage\hfill
 \end{figure}
 
+\subsubsection*{Restart methods}
+From figures \ref{fig:agd_agdr} and \ref{fig:lsagd_lsagdr} it is evident that, in case of AGD and LSAGD, restart (with AGDR and LSAGDR) gives a huge advantage (especially without line search, which is less computationally expensive) at no computational cost.
+
+\subsubsection*{Adaptive Gradient methods}
+Figure \ref{fig:adaptive} shows that adaptive methods such as AdaGrad and ADAM have slower convergence rates than line search adaptive gradient descent with restart (LSAGDR). However, it should be kept in mind that LSAGDR makes use of the Lipschitz-smoothness constant $L$, which can computationally expensive (or not possibile at all) to retrieve. Thus, in case L is hard to compute, or is not available, ADAM and AdaGrad can provide significant improvements in convergence rates with respect to regular Gradient Descent.
+
 \begin{figure}[!hbt]
 \centering
-\minipage{0.50\textwidth}
+\minipage{0.30\textwidth}
 \centering
     \adjincludegraphics[height=\figh,trim={0 0 {.5\width} 0},clip]{hw1/report/img/agd_agdr.pdf}
     \caption{Accelerated GD with restart}
     \label{fig:agd_agdr}
 \endminipage\hfill
-\minipage{0.50\textwidth}
+\minipage{0.30\textwidth}
 \centering
 \adjincludegraphics[height=\figh,trim={0 0 {.5\width} 0},clip]{hw1/report/img/lsagd_lsagdr.pdf}
     \caption{Line Search AGD with restart}
     \label{fig:lsagd_lsagdr}
 \endminipage\hfill
+\minipage{0.30\textwidth}
+\centering
+    \adjincludegraphics[height=\figh,trim={0 0 {.5\width} 0},clip]{hw1/report/img/adaptive.pdf}
+    \caption{Adaptive Gradient methods}
+    \label{fig:adaptive}
+\endminipage\hfill
 \end{figure}
 
-\section*{Stochastic gradient methods for SVM}
+\section{Stochastic gradient methods for SVM}
+
+\subsection*{Stochastic Gradient properties}
+\subsubsection*{Unbiased estimation of stochastic gradient}
+
+\begin{proof}
+
+In order to prove that $\gradik(\xb)$ is an unbiased estimate of $\nabla f(\xb)$, we can take the expectation of $\gradik(\xb)$. Since the $i$s are chosen uniformly at random, each $\gradik(\xb)$ has the same probability to be drawn, then $P[\gradik(\xb)] = \fracn$. Thus,
+
+\begin{gather}
+    \mathbb{E}[\gradik(\xb)] = \sumin \fracn \gradik(\xb) = \nonumber \\
+    = \fracn\lambda\xb + \fracn \sumin \quadrone \ab_i(\abi^T\xb - b_i) + \fracn \sumin \linearone b_i \abi \label{eq:exp-1}
+\end{gather}
+
+We can now work on the central term of eq. \eqref{eq:exp-1}, 
+\begin{gather}
+    \fracn \sumin \quadrone \ab_i(\abi^T\xb - b_i) = \nonumber \\
+    = \fracn \sumin \quadrone \ab_i(b_i^2\abi^T\xb - b_i) = \label{eq:exp-2} \\
+    = \fracn \sumin \quadrone \ab_i b_i(\abi^T\xb - 1)
+\end{gather}
+
+Note that in \eqref{eq:exp-2}, we multiplied $\abi^T\xb$ by $b_i^2$ since $b_i \in \{-1, 1\}$, and then $b_i^2 = 1 \ \forall i$. \eqref{eq:exp-1} then, becomes
+
+\begin{gather}
+    \fracn\lambda\xb + \fracn \sumin \quadrone \ab_i b_i(\abi^T\xb - 1) + \fracn \sumin \linearone b_i \abi = \label{eq:exp-sums} \\
+    = \lambda\xb + \fracn\atilde^T\id_Q[\atilde \xb - \ones] - \fracn\atilde^T\id_L\ones = \nabla f(\xb) \label{eq:exp-matrix}
+\end{gather}
+
+To go from \eqref{eq:exp-sums} to \eqref{eq:exp-matrix}, we can use the same intuitions we used in the proof of $\nabla f(\xb)$.
+
+\end{proof}
+
+\subsubsection*{L-Lipschitz continuity of the stochastic gradient}
+
+Again, in order to prove L-Lipschitz continuity of the stochastic gradient, we use the definition of L-Lipschitz continuity of the gradient of a function, that can be found in eq. \ref{eq:l-smooth}. We then start computing $\lVert \gradik (\xb) - \gradik (\yb) \rVert$
+
+\begin{gather}
+    \lVert \gradik (\xb) - \gradik (\yb) \rVert = \nonumber \\
+    = \lVert \lambda(\xb - \yb) + \quadrone \ab_i(\abi^T\xb - b_i) - \quadrone \ab_i(\abi^T\yb - b_i) \ + \nonumber \\ + \ \linearone b_i \abi - \linearone b_i \abi \rVert \label{eq:l-smooth-linear}
+\end{gather}
+
+We can then note that the components of the linear region. Consequently, we are only concerned with $\{i \ | \ \quadrpred\}$. Then, we can consider $\quadrone$ as $\ones$ and cancel it as well. Eq. \eqref{eq:l-smooth-linear} becomes:
+
+\begin{gather}
+    \lVert \lambda(\xb - \yb) + \abi \abi^T \xb - \abi \abi^T \yb \rVert =
+    \lVert \lambda(\xb - \yb) + \abi \abi^T(\xb - \yb) \rVert = \nonumber \\
+    =  \lVert (\lambda + \abi \abi^T)(\xb - \yb) \rVert \label{eq:l-smooth-bef-cs}
+\end{gather}
+
+We can now apply Cauchy-Schwartz on \eqref{eq:l-smooth-bef-cs}:
+
+\begin{equation*}
+    \lVert (\lambda + \abi \abi^T)(\xb - \yb) \rVert \leq  \lVert \lambda + \abi \abi^T \rVert \lVert \xb - \yb \rVert
+\end{equation*}
+
+Since $\abi \abi^T = \lVert \abi \rVert ^2$ is a scalar, as well as $\lambda$, the norm of their sum is their sum itself. Hence:
+
+\begin{equation}
+    \lVert (\lambda + \abi \abi^T)(\xb - \yb) \rVert \leq (\lambda + \lVert \abi \rVert ^ 2) \lVert \xb - \yb \rVert
+\end{equation}
+
+Which satisfies the definition \eqref{eq:l-smooth} with $L = \lambda + \lVert \abi \rVert ^ 2$.
+
+\subsection*{Methods implementations}
+\subsubsection*{Stochastic Gradient Descent}
+We can see from figure \ref{fig:stochastic} that SGD converges significantly faster than Gradient Descent in the $1^{st}$ epoch, but then it slows down. This is due to the fact that the convergence rate of SGD is sublinear ($\frac{1}{\sqrt{k}}$), while that of GD is linear ($\rho^k$). As a matter of fact, SGD is more powerful with a large $n$ (which corresponds to larger epochs). Moreover, trying SGD several times, it has been possible to notice a high variance in the convergence rate: in some cases SGD kept faster than GD even after the first epoch, in other cases it slowed down significantly before.
+
+\subsubsection*{Stochastic Averaged Gradient}
+SAG can keep fast until about the $4^{th}$ epoch. This first advantage is given by the averaging performed that makes SAG more stable than SGD. However, after the $4^{th}$ epoch, it slows down at the same rate as SGD does.
+
+\subsubsection*{Stochastic Gradient Descent with Variance Reduction}
+In this case, the plot of SVR in figure \ref{fig:stochastic} is quite misleading. In fact, even though SVR converges in very few \emph{epochs}, it is worth noting that each \emph{epoch} of SVR corresponds to 1 complete pass over the gradient (that correspond to 1 \emph{real} epoch), plus $q \approx 9700$ gradients to be computed in the variance reduction phase (corresponding to an equivalent of 17.75 \emph{true} epochs in the case of a dataset counting $n = 546$ datapoints) with a total of about \emph{true} 18.75 epochs each iteration. However, it can be seen from figure \ref{fig:stochastic}, that the convergence of SVR converges very fast in very few iterations.
 
 \begin{figure}[!hbt]
 \centering
-\minipage{0.50\textwidth}
-\centering
-    \adjincludegraphics[height=\figh,trim={0 0 {.5\width} 0},clip]{hw1/report/img/adaptive.pdf}
-    \caption{Adaptive methods}
-    \label{fig:adaptive}
-\endminipage\hfill
-\minipage{0.50\textwidth}
+\minipage{0.30\textwidth}
 \centering
 \adjincludegraphics[height=\figh,trim={{.5\width} 0 0 0},clip]{hw1/report/img/stochastic.pdf}
     \caption{Stochastic Gradient methods}
     \label{fig:stochastic}
+\endminipage\hfill
+\minipage{0.60\textwidth}
+\centering
+\adjincludegraphics[height=\figh]{hw1/report/img/all.pdf}
+    \caption{A comprehensive plot with all the methods}
+    \label{fig:all}
 \endminipage\hfill
 \end{figure}
 
