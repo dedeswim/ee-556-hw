@@ -5,3 +5,4 @@ This repo contains the homework for the graduate course [EE-556 Mathematics of D
 The topics of the different assignments are:
 
 - [Homework 1](hw1): implementation of different descent algorithms, to train SVNs.
+- [Homework 2](hw2): implementation of GANs and optimizers for neural networks.
