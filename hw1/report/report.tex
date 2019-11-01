@@ -5,6 +5,7 @@
 \usepackage[parfill]{parskip}
 \usepackage[export]{adjustbox}
 \usepackage[justification=centering]{caption}
+\usepackage{nameref}
 
 \DeclareMathAlphabet{\mymathbb}{U}{BOONDOX-ds}{m}{n}
 
@@ -69,6 +70,7 @@ and
 \subsection*{(a) Gradient of $f$}
 
 \subsubsection*{Computation of the gradient}
+\label{subsubsec:det-gradient}
 
 \begin{proof}
 Since the gradient is a linear operator:
@@ -77,7 +79,7 @@ Since the gradient is a linear operator:
     \nabla f(\xb) = \nabla \ellsh + \nabla \frac{\lambda}{2} \xnorm ^ 2
 \end{equation}
 
-We can first compute $\nabla \frac{\lambda}{2} \xnorm$:
+We can first compute $\nabla \frac{\lambda}{2} \xnorm ^2$:
 
 \begin{gather}
     \nabla \frac{\lambda}{2} \xnorm ^ 2 =
@@ -143,14 +145,14 @@ We can observe that $\atilde^T\id$ is the matrix whose $i$-th column is $b_i\abi
 since multiplying $\atilde^T\id_L$ by $\ones$ will give as result the vector containing the sum of the elements of each column, which means the element-wise sum of the different $j$-th components of the $i$-th gradients relative to each $g_i(\xb)$. Each $j$-th component can be written as
 
 \begin{equation*}
-    \sum_{i \ \in \ \{i \ | \ b_i(\ax) \ < \ 0\}}^{n} a_{i,j} b_j
+    [\atilde^T\id_L \ones]_j = \sum_{i \in \{i | b_i(\ax) < 0\}} a_{i,j} b_i
 \end{equation*}
 
 In a similar fashion, $\atilde^T\id_Q$ is the matrix whose $i$-th column is $\abi b_i$ only if $i$ is such that $\quadrpred$. Moreover, $\atilde \xb$ is the vector such that $[\atilde \xb]_n = \sumin b_i\abi\xb$. Consequently, $\atilde\id_Q[\atilde \xb - \ones]$ is the vector whose $j$-th component is
 
 \begin{equation*}
     [\atilde^T\id_Q[\atilde \xb - \ones]]_j =
-    \sum_{i \ \in \ \{i \ | \ 0 \ \leq \ b_i(\ax) \ \leq \ 1\}}^{n} b_j a_{i, j} (b_j(\ax) - 1)
+    \sum_{i \in \{i | 0 \leq b_i(\ax) \leq 1\}}^{n} b_i a_{i, j} (b_i(\ax) - 1)
 \end{equation*}
 
 if $\quadrpred$. Then, with 
@@ -231,7 +233,7 @@ with $L = \lambda + \fracn \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rVert$.
 
 \subsection*{(b) Hessian of $f$}
 \begin{proof}
-Assuming that $\id_L = \mathbb{I}$, we can deduce that $\id_L = \mymathbb{0}$, since it would mean that $\forall i \in [1,\ n], \ b_i(\abi^T\xb) \ < \ 0$. Then some simple computations can show that
+Assuming that $\id_L = \mathbb{I}$, we can deduce that $\id_Q = \mymathbb{0}$, since it would mean that $\forall i \in [1,\ n], \ b_i(\abi^T\xb) \ < \ 0$. Then, some simple computations can show that
 
 \begin{equation}
     \nabla f(\xb) = \lambda \xb + \fracn \atilde^T(\atilde\xb) - \atilde^T
@@ -245,7 +247,7 @@ We can then compute the Hessian $\nabla^2 f(\xb)$ as $\nabla \cdot \nabla f(\xb)
     = \lambda \mathbb{I} + \fracn \atilde^T \atilde
 \end{gather}
 
-Hence, $\nabla^2 f(\xb) = \lambda \mathbb{I} + \fracn \atilde^T \atilde$. Moreover, $f(\xb)$ is twice differentiable because $\nabla ^2 f(\xb)$ is continuous over $\mathbb{R}^p$
+Hence, $\nabla^2 f(\xb) = \lambda \mathbb{I} + \fracn \atilde^T \atilde$. Moreover, $f(\xb)$ is twice differentiable because $\nabla ^2 f(\xb)$ is continuous over $\mathbb{R}^p$ (as a matter of fact, it is constant w.r.t. $\xb$).
 
 \end{proof}
 
@@ -271,10 +273,10 @@ with $L = \lambda + \fracn \lVert \mathbf{A}^T \rVert \lVert \mathbf{A} \rVert$ 
 \subsection*{Methods implementations}
 \subsubsection*{(Accelerated) Gradient Descents}
 From figure \ref{fig:gd_agd_str} we can see that:
-\begin{enumerate}
-    \item Assuming strong convexity for both Gradient Descent (GDstr) and Accelerated Gradient Descent (AGDstr) gives a significant advantage in the long run (i.e. after $10^3$ iterations.
-    \item Accelerated (AGD and AGDstr) methods are quite unstable and have several jumps.
-\end{enumerate}
+\begin{itemize}
+    \item Assuming strong convexity for both Gradient Descent (GDstr) and Accelerated Gradient Descent (AGDstr) gives a significant advantage in the long run (i.e. after $10^3$ iterations).
+    \item Accelerated (AGD and AGDstr) methods are quite unstable and have several jumps, which partially cancel the advantage of acceleration, especially in the case with strong convexity assumptions. We can observe that, indeed, $f(\xb^k) - f^{\star}$ increases between the $2^{nd}$ and the $\sim 100^{th}$ iteration. This might be due to the fact that the $\yb^{k+1}$ \emph{stepsize} is constant with $k$ assuming strong convexity, while in the other case it increases. This feature, combined with the local geometry of the objective function $f$ (e.g. \emph{narrowness}) could lead to the aforementioned increase.
+\end{itemize}
 
 \subsubsection*{Line Search Methods}
 From figure \ref{fig:lsagd_lsagdr} we can see that line-search to adapt the step-size to the local geometry makes the loss functions converge with a higher rate, both with Gradient Descent (LSGD) and Accelerated Gradient Descent (LSAGD). However, we should keep in mind that line-search is computationally expensive and then makes each iteration slower.
@@ -299,7 +301,7 @@ From figure \ref{fig:lsagd_lsagdr} we can see that line-search to adapt the step
 From figures \ref{fig:agd_agdr} and \ref{fig:lsagd_lsagdr} it is evident that, in case of AGD and LSAGD, restart (with AGDR and LSAGDR) gives a huge advantage (especially without line search, which is less computationally expensive) at no computational cost.
 
 \subsubsection*{Adaptive Gradient methods}
-Figure \ref{fig:adaptive} shows that adaptive methods such as AdaGrad and ADAM have slower convergence rates than line search adaptive gradient descent with restart (LSAGDR). However, it should be kept in mind that LSAGDR makes use of the Lipschitz-smoothness constant $L$, which can computationally expensive (or not possibile at all) to retrieve. Thus, in case L is hard to compute, or is not available, ADAM and AdaGrad can provide significant improvements in convergence rates with respect to regular Gradient Descent.
+Figure \ref{fig:adaptive} shows that adaptive methods such as AdaGrad and ADAM have slower convergence rates than line search adaptive gradient descent with restart (LSAGDR). However, it is worth noting that LSAGDR makes use of the Lipschitz-smoothness constant $L$, which can computationally expensive (or not possibile at all) to retrieve. Thus, in case L is hard to compute, or is not available, ADAM and AdaGrad can provide significant improvements in convergence rates with respect to regular Gradient Descent.
 
 \begin{figure}[!hbt]
 \centering
@@ -330,7 +332,7 @@ Figure \ref{fig:adaptive} shows that adaptive methods such as AdaGrad and ADAM h
 
 \begin{proof}
 
-In order to prove that $\gradik(\xb)$ is an unbiased estimate of $\nabla f(\xb)$, we can take the expectation of $\gradik(\xb)$. Since the $i$s are chosen uniformly at random, each $\gradik(\xb)$ has the same probability to be drawn, then $P[\gradik(\xb)] = \fracn$. Thus,
+In order to prove that $\gradik(\xb)$ is an unbiased estimate of $\nabla f(\xb)$, we can take the expectation of $\gradik(\xb)$. Since the $i$-th gradients are chosen uniformly at random, each $\gradik(\xb)$ has the same probability to be drawn, then $P\{\gradik(\xb)\} = \fracn \ \forall i$. Thus,
 
 \begin{gather}
     \mathbb{E}[\gradik(\xb)] = \sumin \fracn \gradik(\xb) = \nonumber \\
@@ -351,7 +353,7 @@ Note that in \eqref{eq:exp-2}, we multiplied $\abi^T\xb$ by $b_i^2$ since $b_i \
     = \lambda\xb + \fracn\atilde^T\id_Q[\atilde \xb - \ones] - \fracn\atilde^T\id_L\ones = \nabla f(\xb) \label{eq:exp-matrix}
 \end{gather}
 
-To go from \eqref{eq:exp-sums} to \eqref{eq:exp-matrix}, we can use the same intuitions we used in the proof of $\nabla f(\xb)$.
+To go from \eqref{eq:exp-sums} to \eqref{eq:exp-matrix}, we can use the same intuitions we used in the proof of $\nabla f(\xb)$, in the \nameref{subsubsec:det-gradient} section.
 
 \end{proof}
 
@@ -388,13 +390,13 @@ Which satisfies the definition \eqref{eq:l-smooth} with $L = \lambda + \lVert \a
 
 \subsection*{Methods implementations}
 \subsubsection*{Stochastic Gradient Descent}
-We can see from figure \ref{fig:stochastic} that SGD converges significantly faster than Gradient Descent in the $1^{st}$ epoch, but then it slows down. This is due to the fact that the convergence rate of SGD is sublinear ($\frac{1}{\sqrt{k}}$), while that of GD is linear ($\rho^k$). As a matter of fact, SGD is more powerful with a large $n$ (which corresponds to larger epochs). Moreover, trying SGD several times, it has been possible to notice a high variance in the convergence rate: in some cases SGD kept faster than GD even after the first epoch, in other cases it slowed down significantly before.
+We can see from figure \ref{fig:stochastic} that SGD converges significantly faster than Gradient Descent in the $1^{st}$ epoch, but then it slows down. This is due to the fact that the convergence rate of SGD is sublinear ($\frac{1}{\sqrt{k}}$), while that of GD is linear ($\rho^k$). As a matter of fact, SGD is more powerful with a large $n$ (which corresponds to larger epochs). Moreover, it has been possible to notice a high variance in the convergence  doing doing different trainings: in some cases SGD kept faster than GD even after the first epoch, in other cases it slowed down significantly before.
 
 \subsubsection*{Stochastic Averaged Gradient}
 SAG can keep fast until about the $4^{th}$ epoch. This first advantage is given by the averaging performed that makes SAG more stable than SGD. However, after the $4^{th}$ epoch, it slows down at the same rate as SGD does.
 
 \subsubsection*{Stochastic Gradient Descent with Variance Reduction}
-In this case, the plot of SVR in figure \ref{fig:stochastic} is quite misleading. In fact, even though SVR converges in very few \emph{epochs}, it is worth noting that each \emph{epoch} of SVR corresponds to 1 complete pass over the gradient (that correspond to 1 \emph{real} epoch), plus $q \approx 9700$ gradients to be computed in the variance reduction phase (corresponding to an equivalent of 17.75 \emph{true} epochs in the case of a dataset counting $n = 546$ datapoints) with a total of about \emph{true} 18.75 epochs each iteration. However, it can be seen from figure \ref{fig:stochastic}, that the convergence of SVR converges very fast in very few iterations.
+In this case, the plot of SVR in figure \ref{fig:stochastic} is quite misleading. In fact, even though SVR converges in very few \emph{epochs}, it is worth noting that each \emph{epoch} of SVR corresponds to 1 complete pass over the gradient (that correspond to 1 \emph{real} epoch), plus $q \approx 9700$ gradients to be computed in the variance reduction phase (corresponding to an equivalent of 17.75 \emph{true} epochs in the case of a dataset counting $n = 546$ datapoints) with a total of about 18.75 \emph{true} epochs each iteration. However, it can be seen from figure \ref{fig:stochastic}, that SVR converges very fast in very few iterations.
 
 \begin{figure}[!hbt]
 \centering
