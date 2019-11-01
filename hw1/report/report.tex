@@ -390,7 +390,7 @@ Which satisfies the definition \eqref{eq:l-smooth} with $L = \lambda + \lVert \a
 
 \subsection*{Methods implementations}
 \subsubsection*{Stochastic Gradient Descent}
-We can see from figure \ref{fig:stochastic} that SGD converges significantly faster than Gradient Descent in the $1^{st}$ epoch, but then it slows down. This is due to the fact that the convergence rate of SGD is sublinear ($\frac{1}{\sqrt{k}}$), while that of GD is linear ($\rho^k$). As a matter of fact, SGD is more powerful with a large $n$ (which corresponds to larger epochs). Moreover, it has been possible to notice a high variance in the convergence  doing doing different trainings: in some cases SGD kept faster than GD even after the first epoch, in other cases it slowed down significantly before.
+We can see from figure \ref{fig:stochastic} that SGD converges significantly faster than Gradient Descent in the $1^{st}$ epoch, but then it slows down. This is due to the fact that the convergence rate of SGD is sublinear ($\frac{1}{\sqrt{k}}$), while that of GD is linear ($\rho^k$). As a matter of fact, SGD is more powerful with a large $n$ (which corresponds to larger epochs). Moreover, it has been possible to notice a high variance in the convergence  doing doing different trainings with different random seeds: in some cases SGD kept faster than GD even after the first epoch, in other cases it slowed down significantly before.
 
 \subsubsection*{Stochastic Averaged Gradient}
 SAG can keep fast until about the $4^{th}$ epoch. This first advantage is given by the averaging performed that makes SAG more stable than SGD. However, after the $4^{th}$ epoch, it slows down at the same rate as SGD does.
