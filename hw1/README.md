@@ -13,7 +13,7 @@ This folder contains the first homework. The homework is focused on [**SVNs**](h
 - [x] AdaGrad
 - [x] ADAM
 - [x] Stochastic Gradient Descent
-- [ ] Stochastic Averaging Gradient
-- [ ] Stochastic Gradient Descent with Variance Reduction
+- [x] Stochastic Averaging Gradient
+- [x] Stochastic Gradient Descent with Variance Reduction
 
 In the [report](report/) folder, you can find the report some proofs about the mathematical background of the smooth Hinge loss function (i.e. proof of the gradient, the Hessian and some other properties)
