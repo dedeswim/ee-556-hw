@@ -22,6 +22,7 @@ class GanTrainer():
             iteration and compose an animated gif.
         checkpoints (int): number of images to save as pdf
     """
+
     def __init__(
             self, batch_size, data, noise, make_gif=False):
         self.data = data
@@ -38,14 +39,14 @@ class GanTrainer():
         with torch.no_grad():
             gen_sample = g(self.noise.sample((self.batch_size,))).cpu().numpy()
         file_png = os.path.join(
-                temp, str(self.id) + '_' + str(len(self.snapshots)) + '.png')
+            temp, str(self.id) + '_' + str(len(self.snapshots)) + '.png')
         filename = [file_png]
         if ckpt:
             file_pdf = os.path.join(
-                    str(self.id) + '_' + str(len(self.checkpoints)) + '.pdf')
+                str(self.id) + '_' + str(len(self.checkpoints)) + '.pdf')
             filename.append(file_pdf)
         plots.compare_samples_2D(
-                self.fixed_real_sample, gen_sample, filename)
+            self.fixed_real_sample, gen_sample, filename)
         self.snapshots.append(filename[0])
         if ckpt:
             self.checkpoints.append(filename[1])
@@ -69,19 +70,65 @@ class GanTrainer():
             data_sample (torch.tensor): sample from the true distribution
             noise_sample (torch.tensor): sample from the noise distribution
         """
-        # TODO
+
+        total_objective = f(data_sample) - f(g(noise_sample))
+
+        return total_objective.mean()
 
     def simultaneous_update(self, f, g, f_optim, g_optim):
         """
         Update dual variable and generator at the same time
         """
-        # TODO
+
+        # Reset gradients
+        g_optim.zero_grad()
+        f_optim.zero_grad()
+
+        # Get data samples
+        data_sample = self.data.sample((self.batch_size,))
+        noise_sample = self.noise.sample((self.batch_size,))
+        
+        # Compute objective and its gradient
+        objective = self.objective(f, g, data_sample, noise_sample)
+        objective.backward()
+
+        # Optimize functions
+        g_optim.step()
+        f_optim.step()
 
     def alternating_update(self, f, g, f_optim, g_optim):
         """
         Update dual variable, then update generator
         """
-        # TODO
+        # Update f
+        # Reset f gradient
+        f_optim.zero_grad()
+
+        # Get data samples
+        f_data_sample = self.data.sample((self.batch_size,))
+        f_noise_sample = self.noise.sample((self.batch_size,))
+
+        # Compute objective and its gradient with old f and g
+        objective = self.objective(f, g, f_data_sample, f_noise_sample)
+        objective.backward()
+
+        # Optimize f
+        f_optim.step()
+
+        # Update g
+        # Reset gradient
+        g_optim.zero_grad()
+
+        # Get new data samples
+        g_data_sample = self.data.sample((self.batch_size,))
+        g_noise_sample = self.noise.sample((self.batch_size,))
+
+        # Compute objective and new gradient using new f
+        objective = self.objective(f, g, g_data_sample, g_noise_sample)
+        objective.backward()
+
+        # Optimize g
+        g_optim.step()
 
     def simultaneous(self, n_iter, f, g, f_optim, g_optim, n_checkpoints):
         """
@@ -115,7 +162,7 @@ class GanTrainer():
         ckpts = math.floor(n_iter / n_checkpoints)
 
         for _ in tqdm(range(n_iter)):
-            self.simultaneous_update(f, g, f_optim, g_optim)
+            self.alternating_update(f, g, f_optim, g_optim)
             f.enforce_lipschitz()
 
             if self.make_gif:
@@ -123,4 +170,3 @@ class GanTrainer():
                     self._snapshot(g, ckpt=True)
                 else:
                     self._snapshot(g, ckpt=False)
-

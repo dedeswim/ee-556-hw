@@ -1,5 +1,4 @@
 import torch
-
 from torch import nn
 
 
@@ -13,7 +12,10 @@ class LinearGenerator(nn.Module):
         """
         Evaluate on a sample. The variable z contains one sample per row
         """
-        # TODO
+
+        z = z @ self.W + self.b
+
+        return z
 
 
 class LinearDualVariable(nn.Module):
@@ -25,10 +27,18 @@ class LinearDualVariable(nn.Module):
         """
         Evaluate on a sample. The variable x contains one sample per row
         """
-        # TODO
+
+        x = self.v @ x.t()
+
+        return x
 
     def enforce_lipschitz(self):
         """Enforce the 1-Lipschitz condition of the function"""
         with torch.no_grad():
-            # TODO
 
+            norm = self.v.norm()
+
+            # Check if the norm if v > 1
+            if norm > 1:
+                # In case, normalize it
+                self.v.data /= norm
