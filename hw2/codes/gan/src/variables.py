@@ -13,7 +13,7 @@ class LinearGenerator(nn.Module):
         Evaluate on a sample. The variable z contains one sample per row
         """
 
-        z = z @ self.W + self.b
+        z = z @ self.W.t() + self.b
 
         return z
 
