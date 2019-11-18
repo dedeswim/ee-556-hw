@@ -1,0 +1,160 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath,graphicx,mathtools}
+\usepackage[parfill]{parskip}
+\usepackage[export]{adjustbox}
+\usepackage[justification=centering]{caption}
+\usepackage{nameref}
+
+\DeclareMathAlphabet{\mymathbb}{U}{BOONDOX-ds}{m}{n}
+
+\setlength{\parindent}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\textwidth}{17cm}
+\setlength{\textheight}{22cm}
+\setlength{\topmargin}{0cm}
+\setlength{\headheight}{0pt}
+\setlength{\footskip}{30pt}
+
+\title{EE-556 Homework 2}
+\author{Edoardo Debenedetti}
+
+\begin{document}
+
+\maketitle
+
+\section{Minimax problems and GANs}
+
+Consider the function $f : \mathbb{R}^2 \rightarrow \mathbb{R}$, where $f(x, y) = xy$.
+
+\subsection{First order stationary points of $f$}
+In order to find the first order stationary points, we need to find the gradient and see with which $x$ and $y$ it is equal to $(0, 0)$. The gradient of $f$ is:
+
+\begin{equation} \label{eq:f_gradient}
+    \nabla f(x, y) = \left [ \frac{\partial}{\partial x} xy, \frac{\partial}{\partial y} xy \right] = [y, x]
+\end{equation}
+
+Clearly $\nabla f = (0, 0) \iff (x, y) = (0, 0)$. In order to find classify this stationary point, we need to find the hessian of $f(0, 0)$:
+
+\begin{equation} \label{eq:hessian_f}
+    \nabla^2f(x, y) = \nabla \cdot \nabla f(x, y) =
+        \left [ \frac{\partial}{\partial x}, \frac{\partial}{\partial y} \right]
+        \cdot \begin{bmatrix} y \\ x \end{bmatrix} = 
+        \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \ \forall x,  y \in \mathbb{R}
+\end{equation}
+
+The eigenvalues of $\nabla^2f(x, y)$ are $\lambda_{1} = -1$ and $\lambda_{2} = 1$, one is positive and one is negative, hence the matrix is not (semi-)positive nor (semi-)negative definite. However, we can do the second derivative test to say something more:
+
+\begin{equation} \label{eq:f_hessian_det}
+    Df(x, y) = \frac{\partial^2 f}{\partial^2 x} \frac{\partial^2 f}{\partial^2 y} - 
+        \frac{\partial^2 f}{\partial x \partial y} \frac{\partial^2 f}{\partial y \partial x} = 0 \cdot 0 - 4 \cdot 1 = -4
+\end{equation}
+
+Since $Df(0, 0) < 0$, $(0, 0$ is a saddle point.
+
+\subsection{Solution of minimax problem $\min_{x} \max_{y} f(x, y)$}
+
+$ (x^{\star},y^{\star})=(0,0)$ is a solution to the minimax problem $min_x max_y f(x,y)$ iff
+
+\begin{equation}
+\begin{gathered} \label{def:minimax}
+    f(x^{\star},y^{\star}) \geq f(x^{\star},y) \ \forall y \in \mathbb{R} \ \land
+    \\ f(x^{\star},y^{\star}) \leq f(x,y^{\star}) \ \forall x \in \mathbb{R}
+\end{gathered}
+\end{equation}
+
+\begin{proof}
+With $(x^{\star}, y^{\star}) = (0, 0)$, we have that:
+
+\begin{equation}
+\begin{gathered}
+    f(x^{\star}, y) = 0 \cdot y = 0 \ \forall y \in \mathbb{R} \text{, and} \\
+    f(x, y^{\star}) = x \cdot 0 = 0 \ \forall x \in \mathbb{R}
+\end{gathered}
+\end{equation}
+
+Hence, recalling that $f(x^{\star}, y^{\star}) = 0$:
+
+\begin{equation}
+\begin{gathered}
+    f(x^{\star}, y^{\star}) = f(x^{\star}, y)  \ \forall y \in \mathbb{R} \ \land \\
+    f(x^{\star}, y^{\star}) = f(x, y^{\star})  \ \forall x \in \mathbb{R}
+\end{gathered}
+\end{equation}
+
+However, the equality can be transformed in to a non-strict inequality:
+
+\begin{equation}
+\begin{gathered}
+    f(x^{\star}, y^{\star}) \geq f(x^{\star}, y)  \ \forall y \in \mathbb{R} \ \land \\
+    f(x^{\star}, y^{\star}) \leq f(x, y^{\star})  \ \forall x \in \mathbb{R}
+\end{gathered}
+\end{equation}
+
+which satisfies eq \eqref{def:minimax}.
+
+\end{proof}
+
+\subsection{Gradient descent/ascent divergence}
+\begin{proof}
+The sequence of iterates $\{x_k, y_k\}^{\infty}_{k=0}$, starting from any point $(x_{0}, y_{0}) \neq (0, 0)$ having
+
+\begin{align}
+\begin{aligned}
+    x_{k+1} &= x_{k} - \gamma \nabla_{x} f(x_{k}, y_{k}),  &  y_{k+1} &= y_{k} + \gamma \nabla_{y} f(x_{k}, y_{k})
+\end{aligned}
+\end{align}
+
+But the gradient is known, and the updates can be written as:
+
+\begin{align}
+\begin{aligned} \label{eq:grad_desc}
+    x_{k+1} &= x_{k} - \gamma y_{k},  &  y_{k+1} &= y_{k} + \gamma x_{k},
+\end{aligned}
+\end{align}
+
+The iterates diverge for any $\gamma > 0$ iff $\lVert (x_{k}, y_{k}) \rVert \rightarrow \infty$, as $k \rightarrow \infty$. It is convenient, then, to study the behavior of the squared norm of $\lVert (x_{k+1}, y_{k+1}) \rVert ^ 2$:
+
+\begin{equation}
+    \lVert (x_{k+1}, y_{k+1}) \rVert ^ 2 = x_{k+1}^{2} + y_{k+1}^{2}
+\end{equation}
+
+We can explicit $x_{k+1}$ and $y_{k+1}$ using eq. \eqref{eq:grad_desc}:
+
+\begin{gather}
+    x_{k+1}^{2} + y_{k+1}^{2} = (x_{k} - \gamma y_{k})^{2} + (y_{k} + \gamma x_{k})^{2} = \nonumber \\
+    = x_{k}^{2} + \gamma^{2} y^{2}_{k} - 2 \gamma y_{k} x_{k} + y_{k}^{2} + \gamma^{2} x^{2}_{k} + 2 \gamma y_{k} x_{k} = \nonumber \\
+    = x_{k}^{2} + y_{k}^{2} + \gamma^{2} (x_{k}^{2} + y_{k}^{2}) = \nonumber \\
+    = (1 + \gamma^{2}) (x_{k}^{2} + y_{k}^{2}) \label{eq:norm_series}
+\end{gather}
+
+We can now note that $x_{k}^{2} + y_{k}^{2} = \lVert (x_{k}, y_{k}) \rVert ^ 2$, then, combining with eq. \eqref{eq:norm_series}:
+
+\begin{equation*}
+    \lVert (x_{k+1}, y_{k+1}) \rVert ^ 2 = (1 + \gamma^{2}) \lVert (x_{k}, y_{k}) \rVert ^{2}
+\end{equation*}
+
+Let us recall that $(x_{0}, y_{0}) \neq (0, 0)$, then $\lVert (x_{0}, y_{0}) \rVert ^ 2 \neq 0$. Taking the ratio between the two subsequent norms, we get:
+
+\begin{equation*}
+    \frac{\lVert (x_{k+1}, y_{k+1}) \rVert ^ 2}{\lVert (x_{k}, y_{k}) \rVert ^{2}} = (1 + \gamma^{2})
+\end{equation*}
+
+Since $\gamma > 0$, $1 + \gamma^{2} > 0$, then we can state that:
+
+\begin{equation*}
+    \frac{\lVert (x_{k+1}, y_{k+1}) \rVert ^ 2}{\lVert (x_{k}, y_{k}) \rVert ^{2}} > 1, \ \forall k \in \mathbb{N}
+\end{equation*}
+
+and then
+
+\begin{equation}
+    \lVert (x_{k+1}, y_{k+1}) \rVert ^ 2 > \lVert (x_{k}, y_{k}) \rVert ^{2}, \ \forall k \in \mathbb{N}
+\end{equation}
+
+Which means that the norm $\lVert (x_{k}, y_{k}) \rVert ^{2}$ strictly increases each iteration, hence the iteration diverges. Moreover, since the ratio between two subsequent norms is $1 + \gamma^{2}$, it means that the iterates diverge at a quadratic $1 + \gamma^{2}$ rate.
+
+\end{proof}
+
+\end{document}
