@@ -266,10 +266,10 @@ We can see from figure \ref{fig:alternating} that the real behavior of the gener
 \begin{figure}
 \centering
 \begin{tabular}{cc}
-  \includegraphics[width=\figw]{hw2/codes/gan/plots/simultaneous/0.pdf} &   \includegraphics[width=\figw]{hw2/codes/gan/plots/simultaneous/1.pdf} \\
-Start & 100th iteration \\[6pt]
+  \includegraphics[width=\figw]{hw2/codes/gan/plots/simultaneous/simultaneous_objectives.pdf} &   \includegraphics[width=\figw]{hw2/codes/gan/plots/simultaneous/simultaneous_objectives.pdf} \\
+Simultaneous update objective & Alternating update objective \\[6pt]
 \end{tabular}
-\caption{Alternating updates GAN training results} \label{fig:alternating}
+\caption{GAN training objective} \label{fig:objectives}
 \end{figure}
 
 However, the first momentum does not depend on the variance of the distributions. This means that, even though the the expected value of $X$ and of $g(Z)$ is equal, their Wasserstein distance can still different, since the variance of the two distributions can be different. Therefore, 
