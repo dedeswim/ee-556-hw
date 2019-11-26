@@ -29,3 +29,9 @@ def animate(input_files, output_file, duration):
         images[i] = imageio.imread(file)
     imageio.mimsave(output_file, images, 'GIF', duration=duration)
 
+def plot_objective(objectives, filename):
+    plt.plot(objectives)
+    plt.xlabel('Objective update')
+    plt.ylabel('Objective value')
+    plt.savefig(filename, bbox_inches='tight')
+

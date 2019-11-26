@@ -96,6 +96,8 @@ class GanTrainer():
         g_optim.step()
         f_optim.step()
 
+        return objective
+
     def alternating_update(self, f, g, f_optim, g_optim):
         """
         Update dual variable, then update generator
@@ -109,8 +111,8 @@ class GanTrainer():
         f_noise_sample = self.noise.sample((self.batch_size,))
 
         # Compute objective and its gradient with old f and g
-        objective = self.objective(f, g, f_data_sample, f_noise_sample)
-        objective.backward()
+        objective_f = self.objective(f, g, f_data_sample, f_noise_sample)
+        objective_f.backward()
 
         # Optimize f
         f_optim.step()
@@ -124,20 +126,24 @@ class GanTrainer():
         g_noise_sample = self.noise.sample((self.batch_size,))
 
         # Compute objective and new gradient using new f
-        objective = self.objective(f, g, g_data_sample, g_noise_sample)
-        objective.backward()
+        objective_g = self.objective(f, g, g_data_sample, g_noise_sample)
+        objective_g.backward()
 
         # Optimize g
         g_optim.step()
+
+        return objective_f, objective_g
 
     def simultaneous(self, n_iter, f, g, f_optim, g_optim, n_checkpoints):
         """
         Update generator and discriminator a number of iterations
         """
         ckpts = math.floor(n_iter / n_checkpoints)
+        objectives = []
 
         for _ in tqdm(range(n_iter)):
-            self.simultaneous_update(f, g, f_optim, g_optim)
+            objective = self.simultaneous_update(f, g, f_optim, g_optim)
+            objectives.append(objective)
             f.enforce_lipschitz()
 
             if self.make_gif:
@@ -145,6 +151,8 @@ class GanTrainer():
                     self._snapshot(g, ckpt=True)
                 else:
                     self._snapshot(g, ckpt=False)
+
+        plots.plot_objective(objectives, 'simultaneous_objectives.pdf')
 
     def alternating(self, n_iter, f, g, f_optim, g_optim, n_checkpoints):
         """
@@ -160,9 +168,12 @@ class GanTrainer():
             n_checkpoints (int):
         """
         ckpts = math.floor(n_iter / n_checkpoints)
+        objectives = []
 
         for _ in tqdm(range(n_iter)):
-            self.alternating_update(f, g, f_optim, g_optim)
+            objective = self.alternating_update(f, g, f_optim, g_optim)
+            objectives.append(objective[0])
+            objectives.append(objective[1])
             f.enforce_lipschitz()
 
             if self.make_gif:
@@ -170,3 +181,5 @@ class GanTrainer():
                     self._snapshot(g, ckpt=True)
                 else:
                     self._snapshot(g, ckpt=False)
+
+        plots.plot_objective(objectives, 'alternating_objectives.pdf')

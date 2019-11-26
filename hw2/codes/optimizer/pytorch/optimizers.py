@@ -82,13 +82,15 @@ class AdamOptimizer(optimizer):
             self.iteration = 1
 
         for i, p in enumerate(model.parameters()):
-            
-            self.m1[i] = self.beta1 * self.m1[i] + (1 - self.beta1) * p.grad
-            self.m2[i] = self.beta2 * self.m2[i] + (1 - self.beta2) * p.grad ** 2
 
-            m1_hat = self.m1[i] / (1 - self.beta1 ** (self.iteration + 1))
-            m2_hat = self.m2[i] / (1 - self.beta2 ** (self.iteration + 1))
-            p.grad = self.learning_rate * m1_hat / (self.delta + m2_hat.sqrt())
+            self.m1[i] = self.beta1 * self.m1[i] + (1 - self.beta1) * p.grad
+            self.m2[i] = self.beta2 * self.m2[i] + \
+                (1 - self.beta2) * p.grad ** 2
+
+            m1_hat = self.m1[i] / (1 - self.beta1 ** (self.iteration))
+            m2_hat = self.m2[i] / (1 - self.beta2 ** (self.iteration))
+            p.grad = self.learning_rate * \
+                m1_hat / (self.delta + torch.sqrt(m2_hat))
 
         self.iteration = self.iteration+1
 
