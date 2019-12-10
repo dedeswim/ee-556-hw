@@ -1,0 +1,71 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath,graphicx,mathtools,subfig,hyperref}
+\usepackage[parfill]{parskip}
+\usepackage[export]{adjustbox}
+\usepackage[justification=centering]{caption}
+\usepackage{nameref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\DeclareMathAlphabet{\mymathbb}{U}{BOONDOX-ds}{m}{n}
+
+\setlength{\parindent}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\textwidth}{17cm}
+\setlength{\textheight}{22cm}
+\setlength{\topmargin}{0cm}
+\setlength{\headheight}{0pt}
+\setlength{\footskip}{30pt}
+
+\newcommand{\figw}{7cm}
+\newcommand{\nnperfw}{7cm}
+
+\title{EE-556 Homework 3}
+\author{Edoardo Debenedetti}
+
+\begin{document}
+
+\maketitle
+
+\section{Multiclass classification}
+
+\subsection{Theory}
+
+\subsubsection{Multinomial logistic regression estimator}
+
+\subsubsection{Multinomial logistic regression estimator gradient}
+
+\stepcounter{subsubsection}
+\subsubsection{Lipschitz constant}
+
+\subsubsection{\texorpdfstring{$\ell$}{Lg}-1 Proximal operator}
+
+\subsubsection{\texorpdfstring{$\ell$}{Lg}-2 Proximal operator}
+
+\subsection{Handwritten digit classification}
+
+\stepcounter{subsubsection}
+\subsubsection{Algorithms implementation and convergence}
+
+\subsubsection{Logistic Regression and Neural Network comparison}
+
+\section{Image reconstruction}
+\subsection{Properties of TV and \texorpdfstring{$\ell$}{Lg}-1 in-painting}
+\subsubsection{Gradients of TV and \texorpdfstring{$\ell$}{Lg}-1 in-painting}
+
+\subsubsection{Lipschitz constants of TV and \texorpdfstring{$\ell$}{Lg}-1 in-painting}
+
+\subsection{FISTA implementation and \texorpdfstring{$\lambda$}{Lg} sweep}
+
+\subsection{Proximal methods convergence}
+
+\subsection{Wavelet in-painting and NN unrolling comparison}
+
+\end{document}
