@@ -359,7 +359,7 @@ if __name__ == "__main__":
     search_space = np.logspace(-5, 1, num=15)
 
     # Search for the best lambda
-    search_lambda = False
+    search_lambda = True
     if search_lambda:
 
         print('\n----- Ex. 2.2.b ------\n')
@@ -476,7 +476,7 @@ if __name__ == "__main__":
         plot_convergence(results, f_natural, 'L-1 convergence', ylabel)
 
     # Ex 2.4.a
-    ex_2_4_a = True
+    ex_2_4_a = False
     if ex_2_4_a:
 
         params['maxit'] = 500
@@ -486,7 +486,7 @@ if __name__ == "__main__":
         compare_unrolled(params, image, indices)
 
     # Ex 2.4.b
-    ex_2_4_b = True
+    ex_2_4_b = False
     if ex_2_4_b:
 
         params['maxit'] = 5

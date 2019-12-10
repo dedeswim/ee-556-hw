@@ -20,16 +20,16 @@ def call_all_methods(fx, gx, gradfx, stocgradfx, prox_fc, params):
     all_results = dict()
 
     params['maxit'] = params['maxit_determ']
-    all_results['ISTA'] = ista(fx, gx, gradfx, prox_fc, params)
+    """ all_results['ISTA'] = ista(fx, gx, gradfx, prox_fc, params)
 
     params['restart_fista'] = False
-    all_results['FISTA'] = fista(fx, gx, gradfx, prox_fc, params)
+    all_results['FISTA'] = fista(fx, gx, gradfx, prox_fc, params) """
 
     params['restart_fista'] = True
     all_results['FISTA-RESTART'] = fista(fx, gx, gradfx, prox_fc, params)
 
-    params['maxit'] = params['maxit_stoch']
-    all_results['PROX-SG'] = prox_sg(fx, gx, stocgradfx, prox_fc, params)
+    """ params['maxit'] = params['maxit_stoch']
+    all_results['PROX-SG'] = prox_sg(fx, gx, stocgradfx, prox_fc, params) """
 
     return all_results
 
