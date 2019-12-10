@@ -11,29 +11,38 @@ from random import randint
 
 
 def l1_prox(y, weight):
-    ############## YOUR CODES HERE ##############
-    raise NotImplemented('Implement the method!')
+    prox = np.maximum(np.abs(y) - weight, 0) * np.sign(y)
+    return prox
 
 
 def l2_prox(y, weight):
-    ############## YOUR CODES HERE ##############
-    raise NotImplemented('Implement the method!')
+    prox = y / (1 + weight)
+    return prox
 
 
 def gradfx(X, A, b):
-    ############## YOUR CODES HERE ##############
-    raise NotImplemented('Implement the method!')
+    # Compute exp(AX) just once
+    exp_AX = np.exp(A @ X)
+
+    # Compute the Z diagonal matrix
+    Z = np.diag(1 / np.sum(exp_AX, axis=1))
+
+    # Return the gradient
+    return A.T @ ((Z @ exp_AX) - b)
 
 
 def stocgradfx(X, minibatch_size, A, b):
-    ############## YOUR CODES HERE ##############
-    raise NotImplemented('Implement the method!')
+    idx = np.random.randint(A.shape[0], size=minibatch_size)
+    A_batch = A[idx, :]
+    b_batch = b[idx, :]
+
+    return gradfx(X, A_batch, b_batch)
 
 
 def fx(X, A, b):
     num_samples = A.shape[0]
     return sum(log(sum(exp(A @ X), axis=1)), axis=0) \
-           - sum([dot(A[i, :], X[:, b[i]]) for i in range(0, num_samples)])
+        - sum([dot(A[i, :], X[:, b[i]]) for i in range(0, num_samples)])
 
 
 def norm1(X):
@@ -91,8 +100,10 @@ class RepresentationOperator(object):
         self.m = m
         self.N = m ** 2
 
-        self.W_operator = lambda x: pywt.wavedec2(x, 'db8', mode='periodization')  # From image coefficients to wavelet
-        self.WT_operator = lambda x: pywt.waverec2(x, 'db8', mode='periodization')  # From wavelet coefficients to image
+        self.W_operator = lambda x: pywt.wavedec2(
+            x, 'db8', mode='periodization')  # From image coefficients to wavelet
+        self.WT_operator = lambda x: pywt.waverec2(
+            x, 'db8', mode='periodization')  # From wavelet coefficients to image
         _, self.coeffs = pywt.coeffs_to_array(self.W_operator(np.ones((m, m))))
 
     def W(self, x):
@@ -109,5 +120,6 @@ class RepresentationOperator(object):
             Computes the adjoint Wavelet transform from a vectorized image.
         """
         wav_x = np.reshape(wav_x, (self.m, self.m))
-        x = self.WT_operator(pywt.array_to_coeffs(wav_x, self.coeffs, output_format='wavedec2'))
+        x = self.WT_operator(pywt.array_to_coeffs(
+            wav_x, self.coeffs, output_format='wavedec2'))
         return np.reshape(x, (self.N, 1))

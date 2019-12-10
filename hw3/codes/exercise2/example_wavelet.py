@@ -14,6 +14,10 @@ def main():
     r = RepresentationOperator(m=im_shape[0])
 
     i_wav = r.W(im).reshape(im_shape)
+    print(i_wav.max())
+    i_wav[256:,:] = 0
+    i_wav[:,256:] = 0
+    print(i_wav.shape)
     i_recon = r.WT(i_wav).reshape(im_shape)
 
     fig, axs = plt.subplots(1, 3, figsize=(12, 4))
