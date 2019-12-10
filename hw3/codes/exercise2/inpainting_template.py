@@ -476,7 +476,7 @@ if __name__ == "__main__":
         plot_convergence(results, f_natural, 'L-1 convergence', ylabel)
 
     # Ex 2.4.a
-    ex_2_4_a = False
+    ex_2_4_a = True
     if ex_2_4_a:
 
         params['maxit'] = 500
