@@ -46,7 +46,7 @@ In order to find the first order stationary points, we need to find the gradient
 \begin{equation} \label{eq:f_gradient}
     \nabla f(x, y) = \left [ \frac{\partial}{\partial x} xy, \frac{\partial}{\partial y} xy \right] = [y, x]
 \end{equation}
-Clearly $\nabla f = (0, 0) \iff (x, y) = (0, 0)$. In order to find classify this stationary point, we need to find the hessian of $f(0, 0)$:
+Clearly $\nabla f = (0, 0) \iff (x, y) = (0, 0)$. In order to classify this stationary point, we need to find the hessian of $f(0, 0)$:
 \begin{equation} \label{eq:hessian_f}
     \nabla^2f(x, y) = \nabla \cdot \nabla f(x, y) =
         \left [ \frac{\partial}{\partial x}, \frac{\partial}{\partial y} \right]
@@ -58,7 +58,7 @@ The eigenvalues of $\nabla^2f(x, y)$ are $\lambda_{1} = -1$ and $\lambda_{2} = 1
     Df(x, y) = \frac{\partial^2 f}{\partial^2 x} \frac{\partial^2 f}{\partial^2 y} - 
         \frac{\partial^2 f}{\partial x \partial y} \frac{\partial^2 f}{\partial y \partial x} = 0 \cdot 0 - 4 \cdot 1 = -4
 \end{equation}
-Since $Df(0, 0) < 0$, $(0, 0$ is a saddle point.
+Since $Df(0, 0) < 0$, $(0, 0)$ is a saddle point.
 
 \subsubsection{Solution of minimax problem \texorpdfstring{$\min_{x} \max_{y} f(x, y)$}{Lg}}
 
@@ -84,14 +84,14 @@ Hence, recalling that $f(x^{\star}, y^{\star}) = 0$:
     f(x^{\star}, y^{\star}) = f(x, y^{\star})  \ \forall x \in \mathbb{R}
 \end{gathered}
 \end{equation}
-However, the equality can be transformed in to a non-strict inequality:
+However, the equalities can be transformed in to a non-strict inequalities:
 \begin{equation}
 \begin{gathered}
     f(x^{\star}, y^{\star}) \geq f(x^{\star}, y)  \ \forall y \in \mathbb{R} \ \land \\
     f(x^{\star}, y^{\star}) \leq f(x, y^{\star})  \ \forall x \in \mathbb{R}
 \end{gathered}
 \end{equation}
-which satisfies eq \eqref{def:minimax}.
+which satisfies eq. \eqref{def:minimax}.
 
 \end{proof}
 
@@ -137,7 +137,7 @@ and then
 \begin{equation}
     \lVert (x_{k+1}, y_{k+1}) \rVert ^ 2 > \lVert (x_{k}, y_{k}) \rVert ^{2}, \ \forall k \in \mathbb{N}
 \end{equation}
-Which means that the norm $\lVert (x_{k}, y_{k}) \rVert ^{2}$ strictly increases each iteration, hence the iteration diverges. Moreover, since the ratio between two subsequent squared norms is $1 + \gamma^{2}$, it means that the norm, and then the sequence of iterates $\{x_k, y_k\}^{\infty}_{k=0}$ diverges at a quadratic $\sqrt{1 + \gamma^{2}}$ rate.
+Which means that the norm $\lVert (x_{k}, y_{k}) \rVert ^{2}$ strictly increases each iteration. Moreover, since the ratio between two subsequent squared norms is $1 + \gamma^{2}$, it means that the norm, and then the sequence of iterates $\{x_k, y_k\}^{\infty}_{k=0}$ diverges at a quadratic $\sqrt{1 + \gamma^{2}}$ rate.
 
 \end{proof}
 
@@ -151,7 +151,7 @@ Given a generator $\mathcal{G}$ and a dual variable $\mathcal{F}$
 \end{align}
 Where we want $\mathcal{G}$ to map a standard normal noise distribution on $\mathbb{R}^{2}$ to a \emph{true} distribution which is multivariate normal on $\mathbb{R}^{2}$. In our specific case, $W \in \mathbb{R}^{2 \times 2}$, and $z,\ x,\ v,\ b \in \mathbb{R}^{2}$.
 
-The minimax game we want to solve is:
+The minimax game we want to optimize is:
 \begin{equation}
     \min_{g \in \mathcal{G}} \max_{f \in \mathcal{F}} \mathbb{E}[f(X) - f(g(Z))]
 \end{equation}
@@ -166,7 +166,7 @@ where $L$ is the L-Lipschitz smoothness constant. We can then compute the norm o
     \lVert f(\mathbf{x}) - f(\mathbf{y}) \rVert = \lVert v^{T} \mathbf{x} - v^{T} \mathbf{y} \rVert = 
         \lVert v^{T} (\mathbf{x} - \mathbf{y}) \rVert
 \end{gather}
-We can now use Cauchy-Schwartz inequality:
+Using Cauchy-Schwartz inequality:
 \begin{gather} \label{eq:l-lipsch}
         \lVert v^{T} (\mathbf{x} - \mathbf{y}) \rVert \leq \lVert v^{T} \rVert \lVert \mathbf{x} - \mathbf{y} \rVert \leq L \lVert \mathbf{x} - \mathbf{y} \rVert, \iff \lVert v^{T} \rVert \leq L
 \end{gather}
@@ -178,8 +178,7 @@ Using eq. \eqref{eq:l-lipsch} we can enforce $f$ to have L-Lipschitz constant sm
 \begin{equation}
     W(\mu, \nu) = \sup{\{ \mathbb{E}_{x \sim \mu} [f(x)] - \mathbb{E}_{y \sim \nu} [f(y)] : f \text{ is 1-Lipschitz} \}} \label{eq:wasserstein}
 \end{equation}{}
-
-The objective function $\mathbb{E}[f(X) - f(g(Z))]$ can be computed by taking a random sample from the real distribution and the noise, computing the function itself applying the two functions \texttt{f} on X (the true distribution) and to the result of \texttt{g} of Z (the noise). We can then take the mean of the results (which, in a similar fashion as we did in homework one, can be proved to be an unbiased estimate of the complete objective function).
+The objective function $\mathbb{E}[f(X) - f(g(Z))]$ can be computed by taking a random sample from the real distribution and the noise, computing the function itself applying the two functions \texttt{f} on X (the true distribution) and to the result of \texttt{g} of Z (the noise). We can then take the mean of the results (which, in a similar fashion as we did in homework 1, can be proved to be an unbiased estimate of the complete objective function).
 
 \subsubsection{Training implementation} \label{subsub:gan-train-impl}
 
@@ -231,12 +230,12 @@ by first swapping the expectation operators with the function $f$, since both ar
     \max_{f \in \mathcal{F}} \mathbb{E}_{X \sim \mu} [f(X)] -  \mathbb{E}_{Y \sim \nu} [f(Y)] = \\
     \max_{f \in \mathcal{F}} f(\mathbb{E}_{X \sim \mu} [X]) -  f(\mathbb{E}_{Y \sim \nu} [Y]) = \label{eq:inner-exp}
 \end{gather}
-From now on, for the sake of simplicity we will write $\mathbb{E}_{X \sim \mu} [X]$ as $\Bar{X}$ and $\mathbb{E}_{Y \sim \nu} [Y]$ as $\bar{Y}$ We can now define the set of vectors $v \in \mathcal{V}_{1}$ which have norm $\lVert v \rVert \leq 1$ and then express eq. \ref{eq:inner-exp} as
+From now on, for the sake of simplicity we will write $\mathbb{E}_{X \sim \mu} [X]$ as $\Bar{X}$ and $\mathbb{E}_{Y \sim \nu} [Y]$ as $\bar{Y}$. We can also define the set of vectors $v \in \mathcal{V}_{1}$ which have norm $\lVert v \rVert \leq 1$ and then express eq. \eqref{eq:inner-exp} as
 \begin{gather}
     \max_{v \in \mathcal{V}_1} v^{T}\Bar{X} -  v^{T}\Bar{Y} = \\
     \max_{v \in \mathcal{V}_1} v^{T}(\Bar{X} - \Bar{Y}) \label{eq:momentum-difference}
 \end{gather}
-Now we can consider different case, based on the different nature of the distributions. In the case where $\Bar{X} - \Bar{Y}$, then $\max_{v \in \mathcal{V}_1} v^{T}(\Bar{X} - \Bar{Y}) = 0$, which satisfies eq. \ref{eq:exp-max-larger}. Otherwise, if $\Bar{X} - \Bar{Y} \lessgtr 0$, we can pick as $v \in \mathcal{V}_1$ the normal vector
+Now we can consider different case, based on the different nature of the distributions. In the case where $\Bar{X} - \Bar{Y} = 0$, $\max_{v \in \mathcal{V}_1} v^{T}(\Bar{X} - \Bar{Y}) = 0$, which satisfies eq. \eqref{eq:exp-max-larger}. Otherwise, if $\Bar{X} - \Bar{Y} \lessgtr 0$, we can pick as $v \in \mathcal{V}_1$ the normal vector
 \begin{equation} \label{eq:v}
     \hat{v} = \frac{\Bar{X} - \Bar{Y}}{\lVert \Bar{X} - \Bar{Y} \rVert}
 \end{equation}
@@ -246,7 +245,7 @@ In such case,
     \left ( \frac{\Bar{X} - \Bar{Y}}{\lVert \Bar{X} - \Bar{Y} \rVert} \right ) ^{T}(\Bar{X} - \Bar{Y}) = \\
     = \frac{\lVert \Bar{X} - \Bar{Y} \rVert ^{2}}{\lVert \Bar{X} - \Bar{Y} \rVert} = \lVert \Bar{X} - \Bar{Y} \rVert \geq 0
 \end{gather}
-Since eq. \ref{eq:inner-exp} requires the max to be greater or equal than 0, we just need to find one $f$ that satisfies such condition, which is satisfied with $f = \hat{v}^{T}x$. However, since $\hat{v}$ is parallel to $\Bar{X} - \Bar{Y}$ and since is the largest vector that satisfies the 1-Lipschitz condition, is the vector that maximizes the product $v^{T}(\Bar{X} - \Bar{Y})$ which means
+Since eq. \eqref{eq:inner-exp} requires the max to be greater or equal than 0, we just need to find one $f$ that satisfies such condition, which is satisfied with $f = \hat{v}^{T}x$. However, since $\hat{v}$ is parallel to $\Bar{X} - \Bar{Y}$ and since is the largest vector that satisfies the 1-Lipschitz condition, is the vector that maximizes the product $v^{T}(\Bar{X} - \Bar{Y})$ which means
 
 \begin{equation}
     \hat{v} \in \{v : \max_{v \in \mathcal{V}_1} v^{T}(\Bar{X} - \Bar{Y})\}
@@ -259,24 +258,22 @@ If we consider the left side of the inequality defined in \eqref{eq:expectation-
 \end{proof}
 
 \paragraph{Update non-convergence study}
-In the case of the simultaneous update, we update $f$ and $g$ together, which means that we simultaneously try to minimize Wasserstein distance over the generator $g$ and to compute the Wasserstein distance maximizing the difference between the expectations over the dual variable $f$. Instead, in the case of alternating updates, we first maximize the difference between the expectations over the dual variable $f$ to compute Wasserstein distance, and then we try minimize Wasserstein distance over the generator $g$.
+In the case of the simultaneous update, we update $f$ and $g$ together, which means that we simultaneously try to minimize Wasserstein distance over the generator $g$ and to compute the Wasserstein distance maximizing the difference between the expectations over the dual variable $f$. Instead, in the case of alternating updates, we first maximize the difference between the expectations over the dual variable $f$ to compute Wasserstein distance, and then we try to minimize Wasserstein distance over the generator $g$.
 
-We can see from figure \ref{fig:alternating} that the real behavior of the generated data is oscillating around the mean, which means that $\mathbb{E}_{Z \sim \nu} [f(g(Z))]$ oscillates around $\mathbb{E}_{X \sim \mu} [f(X)]$ and then, since $f$ is linear, we can say that $\mathbb{E}_{Z \sim \nu} [g(Z)]$ oscillates around $\mathbb{E}_{X \sim \mu} [X]$. This is caused by the fact that, when the noise $Z$ is mapped to a distribution that has the same expectation as $X$ does, then $\max_{f \in \mathcal{F}} \mathbb{E}_{X \sim \mu} [f(X)] -  \mathbb{E}_{Z \sim \nu} [f(g(Z)] = 0$, according to what we proved above. This is evident in figures blabla, where we can see how the objective changes in both kinds of updates.
+We can see from figure \ref{fig:alternating} that the real behavior of the generated data is oscillating around the mean, which means that $\mathbb{E}_{Z \sim \nu} [f(g(Z))]$ oscillates around $\mathbb{E}_{X \sim \mu} [f(X)]$, and then, since $f$ is linear, we can say that $\mathbb{E}_{Z \sim \nu} [g(Z)]$ oscillates around $\mathbb{E}_{X \sim \mu} [X]$. This is evident also in figure \ref{fig:objectives}, where we can see how the objective oscillates around 0 in both kinds of updates. Using alternating updates lead to a more oscillatory behavior, but the trend is the same. This is caused by the fact that, when the noise $Z$ is mapped to a distribution that has the same expectation as $X$ does, then $\max_{f \in \mathcal{F}} \mathbb{E}_{X \sim \mu} [f(X)] - \mathbb{E}_{Z \sim \nu} [f(g(Z)] = 0$, according to what we proved above. However, $g$ will still be updated to minimize the objective function (that can get negative values), leading to values smaller than 0, until the dual variable counteracts the observed behavior, causing the observed oscillatory behavior. A possible solution to this problem could be to take in consideration also higher order momenta for the distributions (such as variance).
 
 \begin{figure}
 \centering
 \begin{tabular}{cc}
-  \includegraphics[width=\figw]{hw2/codes/gan/plots/simultaneous/simultaneous_objectives.pdf} &   \includegraphics[width=\figw]{hw2/codes/gan/plots/simultaneous/simultaneous_objectives.pdf} \\
-Simultaneous update objective & Alternating update objective \\[6pt]
+  \includegraphics[width=\figw]{hw2/codes/gan/plots/simultaneous/simultaneous_objectives.pdf} &   \includegraphics[width=\figw]{hw2/codes/gan/plots/alternating/alternating_objectives.pdf} \\
+Simultaneous updates objective & Alternating updates objective \\[6pt]
 \end{tabular}
-\caption{GAN training objective} \label{fig:objectives}
+\caption{GAN training objective behavior} \label{fig:objectives}
 \end{figure}
-
-However, the first momentum does not depend on the variance of the distributions. This means that, even though the the expected value of $X$ and of $g(Z)$ is equal, their Wasserstein distance can still different, since the variance of the two distributions can be different. Therefore, 
 
 \section{Optimizers of Neural Networks}
 
-From the plots and from the tables, we can see that, in general, the best performing learning rate is $10^{-2}$. In fact, the only two methods that converge fast enough with l.r. $10^{-5}$ are ADAM and RMSProp. On the other side, the only two algorithms that do not suffer from the larger 0.5 learning rate are regular SGD and AdaGrad. Moreover, it is worth noting that with 0.5 l.r. the loss decreases quite fast for all the methods, but the accuracy does not increase for all of them. This phenomenon could be caused by overfitting on the loss function. In a classification task like the one our neural network is performing is more important to use the accuracy than the loss as a performance metric (even though accuracy could have strong limitations due to class proportions in the dataset in use).
+From the plots in figures \ref{fig:nn-1e-5}, \ref{fig:nn-1e-2}, \ref{fig:nn-0-5} and from the tables \ref{tab:1e-5}, \ref{tab:1e-2}, \ref{tab:0-5}, we can see that, in general, the best performing learning rate is $10^{-2}$. In fact, the only two methods that converge fast enough with l.r. $10^{-5}$ are ADAM and RMSProp. On the other side, the only two algorithms that do not suffer from the larger 0.5 learning rate are regular SGD and AdaGrad. Moreover, it is worth noting that with 0.5 l.r. the loss decreases quite fast for all the methods, but the accuracy does not increase for all of them. This phenomenon could be caused by overfitting on the loss function. In a classification task like the one our neural network is performing is more important to use the accuracy than the loss as a performance metric (even though accuracy could have strong limitations due to class proportions in the dataset in use).
 
 In general, adaptive gradient methods perform slightly better and are more robust to different learning rates, even though we have some noteworthy differences among them. As a matter of fact, AdaGrad does not perform well enough with a too small learning rate, which can be caused by the stronger weight given to older gradients. Older gradients could lead to a more \textit{conservative} behavior that slows down AdaGrad's convergence. On the other side, this \textit{conservative} behavior improves AdaGrad's performance with the significantly larger 0.5 stepsize, for which we get acceptable enough performance.
 
