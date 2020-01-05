@@ -1,0 +1,1 @@
+FISTA-RESTART-l2 accuracy = 89.890000%.

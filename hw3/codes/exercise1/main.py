@@ -20,16 +20,16 @@ def call_all_methods(fx, gx, gradfx, stocgradfx, prox_fc, params):
     all_results = dict()
 
     params['maxit'] = params['maxit_determ']
-    """ all_results['ISTA'] = ista(fx, gx, gradfx, prox_fc, params)
+    all_results['ISTA'] = ista(fx, gx, gradfx, prox_fc, params)
 
     params['restart_fista'] = False
-    all_results['FISTA'] = fista(fx, gx, gradfx, prox_fc, params) """
+    all_results['FISTA'] = fista(fx, gx, gradfx, prox_fc, params)
 
     params['restart_fista'] = True
     all_results['FISTA-RESTART'] = fista(fx, gx, gradfx, prox_fc, params)
 
-    """ params['maxit'] = params['maxit_stoch']
-    all_results['PROX-SG'] = prox_sg(fx, gx, stocgradfx, prox_fc, params) """
+    params['maxit'] = params['maxit_stoch']
+    all_results['PROX-SG'] = prox_sg(fx, gx, stocgradfx, prox_fc, params)
 
     return all_results
 
@@ -78,17 +78,22 @@ def main():
                         'Visualization of solution for L1 - regularized LogisticRegression')
     print('FISTA-RESTART-l1 accuracy = {:f}%.\n'.format(compute_accuracy(
         all_results_l1['FISTA-RESTART']['X_final'], A_test, b_test) * 100))
+    print('PROX-SG-l1 accuracy = {:f}%.\n'.format(
+        compute_accuracy(all_results_l1['PROX-SG']['X_final'], A_test, b_test) * 100))
 
     params['lambda'] = lmbd_l2
     all_results_l2 = call_all_methods(
         fx, operators.norm2sq, gradfx, stocgradfx, operators.l2_prox, params)
     plot_convergence(all_results_l2, f_star_l2, epoch_to_iteration_exchange_rate,
                      'L2 - regularized LogisticRegression')
+    print('FISTA-RESTART-l2 accuracy = {:f}%.\n'.format(
+        compute_accuracy(all_results_l2['FISTA-RESTART']['X_final'], A_test, b_test) * 100))
+    print('PROX-SG-l2 accuracy = {:f}%.\n'.format(
+        compute_accuracy(all_results_l2['PROX-SG']['X_final'], A_test, b_test) * 100))
+
     plot_digit_features(all_results_l2['FISTA-RESTART']['X_final'],
                         'Visualization of solution for L2 - regularized LogisticRegression')
 
-    print('FISTA-RESTART-l2 accuracy = {:f}%.\n'.format(
-        compute_accuracy(all_results_l2['FISTA-RESTART']['X_final'], A_test, b_test) * 100))
 
     print('============= THAT\'S ALL FOLKS! =============')
 

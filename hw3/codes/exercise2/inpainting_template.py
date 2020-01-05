@@ -316,7 +316,7 @@ if __name__ == "__main__":
     params['indices'] = indices
 
     # First check if FISTA works on just one lambda (= 0.01)
-    ex_2_3_a = False
+    ex_2_3_a = True
     if ex_2_3_a:
         #######################################
         # Reconstruction with L1 and TV norms #
@@ -405,7 +405,7 @@ if __name__ == "__main__":
         print(f'Best tv lambda = {best_tv_lambda}')
 
     # Ex. 2.3.b
-    ex_2_3_b = False
+    ex_2_3_b = True
     if ex_2_3_b:
         print('\n----- Ex. 2.3.b ------\n')
         # Set corresponding parameters
@@ -441,7 +441,7 @@ if __name__ == "__main__":
             F_x - F_star) / F_star
 
     # Ex 2.3.c
-    ex_2_3_c = False
+    ex_2_3_c = True
     if ex_2_3_c:
         print('\n----- Ex. 2.3.c ------\n')
         params['maxit'] = 2000
@@ -454,7 +454,7 @@ if __name__ == "__main__":
         plot_convergence(results, f_star, 'L-1 convergence', ylabel)
 
     # Ex 2.3.d
-    ex_2_3_d = False
+    ex_2_3_d = True
     if ex_2_3_d:
         print('\n----- Ex. 2.3.d ------\n')
 
@@ -476,7 +476,7 @@ if __name__ == "__main__":
         plot_convergence(results, f_natural, 'L-1 convergence', ylabel)
 
     # Ex 2.4.a
-    ex_2_4_a = False
+    ex_2_4_a = True
     if ex_2_4_a:
 
         params['maxit'] = 500
@@ -486,7 +486,7 @@ if __name__ == "__main__":
         compare_unrolled(params, image, indices)
 
     # Ex 2.4.b
-    ex_2_4_b = False
+    ex_2_4_b = True
     if ex_2_4_b:
 
         params['maxit'] = 5
