@@ -284,5 +284,49 @@ For the second case, given $\argmin_{\boldX_{ij}} \lvert \boldX_{ij} - \boldZ_{i
 where $\max$ is applied element-wise.
 
 \subsubsection{Implementation}
+\paragraph{No specific penalizer parameter}
+The k-means value before the clustering is $150.9680$.
+We first run the experiment using the same penalizer coefficient for all the constraints. With this setting we obtain a final k-means value of $98.5119$, and what is plotted in \Cref{fig:no-beta-convergence}, \Cref{fig:no-beta-relative-obj-res} and \Cref{fig:no-beta-heatmap}. The obtained misclassification rate is $0.1600$, while the final objective value is $-286.55$, which is lower than the provided $57.05339187$.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=17cm]{hw4/code/part3/results/no_beta/convergence.pdf}
+    \caption{Convergence for k-means clustering, using no specific $\beta$ coefficient for the $\mathcal{K}$ quadratic penalty function.}
+    \label{fig:no-beta-convergence}
+\end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=10cm]{hw4/code/part3/results/no_beta/relative_objective_residual.pdf}
+    \caption{Relative objective residual for k-means clustering, using no specific $\beta$ coefficient for the $\mathcal{K}$ quadratic penalty function.}
+    \label{fig:no-beta-relative-obj-res}
+\end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=12cm]{hw4/code/part3/results/no_beta/heatmap.pdf}
+    \caption{SDP solution for k-means clustering, using no specific $\beta$ coefficient for the $\mathcal{K}$ quadratic penalty function.}
+    \label{fig:no-beta-heatmap}
+\end{figure}
+
+\paragraph{Specific penalizer parameter}
+Next, an experiment is run using a specific $\beta = 1000$ for the as coefficient for the $\mathcal{K}$ quadratic penalty function. With this setting we obtain a final k-means value of $48.6801$, and what is plotted in \Cref{fig:beta-convergence}, \Cref{fig:beta-relative-obj-res} and \Cref{fig:beta-heatmap}. The obtained misclassification rate is $0.1330$, while the final objective value is $-128.41$, which is lower than the provided $57.05339187$.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=17cm]{hw4/code/part3/results/beta/convergence.pdf}
+    \caption{Convergence for k-means clustering, using $\beta = 1000$ as coefficient for the $\mathcal{K}$ quadratic penalty function.}
+    \label{fig:beta-convergence}
+\end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=10cm]{hw4/code/part3/results/beta/relative_objective_residual.pdf}
+    \caption{Relative objective residual for k-means clustering, using $\beta = 1000$ as coefficient for the $\mathcal{K}$ quadratic penalty function.}
+    \label{fig:beta-relative-obj-res}
+\end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=12cm]{hw4/code/part3/results/beta/heatmap.pdf}
+    \caption{SDP solution for k-means clustering, using $\beta = 1000$ as coefficient for the $\mathcal{K}$ quadratic penalty function.}
+    \label{fig:beta-heatmap}
+\end{figure}
 
 \end{document}
