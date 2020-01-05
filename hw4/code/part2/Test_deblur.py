@@ -162,7 +162,7 @@ def FrankWolfe(Aoper, AToper, b, n1, n2, kappa, maxit, plotFunc):
         AX_t = (1.0 - weight) * AX_t + weight * (AXsharp_t)
 
         # Update X
-        X = (1.0 - weight) * X + weight * (-kappa * np.outer(topLe_vec, topRe_vec))
+        X = (1.0 - weight) * X + weight * (-kappa * np.outer(topLe_vec, topRe_vec.T))
 
         # Show the reconstruction (at every 10 iteration)
         if (iteration % 10 == 0):

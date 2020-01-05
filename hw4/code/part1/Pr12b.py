@@ -7,8 +7,7 @@ from time import time
 
 def sharpNuc(Z, kappa):
     u, s, vt = linalg.svds(Z, k=1)
-
-    return -kappa * u @ vt
+    return -kappa * np.outer(u, vt.T)
 
 
 data = scipy.io.loadmat('./dataset/ml-100k/ub_base')  # load 100k dataset

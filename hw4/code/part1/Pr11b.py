@@ -22,12 +22,11 @@ def projNuc(Z, kappa):
     
     # v is not already a solution: optimum lies on the boundary (norm == s)
     # compute l1-projected s matrix
-    s_l1 = projL1(s)
+    s_l1 = np.diag(projL1(s))
 
     # Compute and return projected matrix
-    return u @ s_l1 @ v.T
-
-
+    return u @ s_l1 @ v.Tcd
+    
 data = scipy.io.loadmat('./dataset/ml-100k/ub_base')  # load 100k dataset
 
 Rating = data['Rating'].flatten()
