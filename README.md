@@ -7,3 +7,4 @@ The topics of the different assignments are:
 - [Homework 1](hw1): implementation of different descent algorithms, to train SVNs.
 - [Homework 2](hw2): implementation of GANs and optimizers for neural networks.
 - [Homework 3](hw3): multi-class logistic regression and image reconstruction.
+- [Homework 4](hw4): projection-free convex low-rank matrix optimization, image deblurring with blind deconvolution, k-means clustering by semidefinite programming.
