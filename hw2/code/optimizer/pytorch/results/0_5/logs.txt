@@ -1,0 +1,285 @@
+******************************************************
+First run
+******************************************************
+
+Training with SGD
+Epoch=1 cost=0.3276 Accuracy=0.8978
+Epoch=2 cost=0.1050 Accuracy=0.9673
+Epoch=3 cost=0.0710 Accuracy=0.9776
+Epoch=4 cost=0.0513 Accuracy=0.9836
+Epoch=5 cost=0.0400 Accuracy=0.9869
+Epoch=6 cost=0.0292 Accuracy=0.9908
+Epoch=7 cost=0.0222 Accuracy=0.9935
+Epoch=8 cost=0.0172 Accuracy=0.9946
+Epoch=9 cost=0.0124 Accuracy=0.9963
+Epoch=10 cost=0.0108 Accuracy=0.9969
+Epoch=11 cost=0.0075 Accuracy=0.9979
+Epoch=12 cost=0.0067 Accuracy=0.9982
+Epoch=13 cost=0.0024 Accuracy=0.9997
+Epoch=14 cost=0.0010 Accuracy=1.0000
+Epoch=15 cost=0.0007 Accuracy=0.9999
+Optimization Finished!
+Test accuracy: 0.985
+Training with MomentumSGD
+Epoch=1 cost=1.0610 Accuracy=0.7298
+Epoch=2 cost=1.9135 Accuracy=0.2748
+Epoch=3 cost=1.9145 Accuracy=0.2520
+Epoch=4 cost=1.8897 Accuracy=0.2720
+Epoch=5 cost=1.9910 Accuracy=0.2097
+Epoch=6 cost=1.9913 Accuracy=0.2141
+Epoch=7 cost=2.0115 Accuracy=0.2164
+Epoch=8 cost=1.9819 Accuracy=0.2087
+Epoch=9 cost=1.9847 Accuracy=0.2100
+Epoch=10 cost=1.9811 Accuracy=0.2088
+Epoch=11 cost=1.9427 Accuracy=0.2276
+Epoch=12 cost=1.9250 Accuracy=0.2356
+Epoch=13 cost=1.9798 Accuracy=0.2099
+Epoch=14 cost=1.9796 Accuracy=0.2105
+Epoch=15 cost=1.9805 Accuracy=0.2101
+Optimization Finished!
+Test accuracy: 0.2144
+Training with RMSProp
+Epoch=1 cost=1158.0724 Accuracy=0.1053
+Epoch=2 cost=2.4055 Accuracy=0.0989
+Epoch=3 cost=2.3572 Accuracy=0.0990
+Epoch=4 cost=2.3553 Accuracy=0.1000
+Epoch=5 cost=2.3560 Accuracy=0.1008
+Epoch=6 cost=2.3555 Accuracy=0.1023
+Epoch=7 cost=2.3546 Accuracy=0.1019
+Epoch=8 cost=2.3564 Accuracy=0.1003
+Epoch=9 cost=2.3543 Accuracy=0.1025
+Epoch=10 cost=2.3565 Accuracy=0.1023
+Epoch=11 cost=2.3562 Accuracy=0.0994
+Epoch=12 cost=2.3551 Accuracy=0.1014
+Epoch=13 cost=2.3557 Accuracy=0.1018
+Epoch=14 cost=2.3568 Accuracy=0.0990
+Epoch=15 cost=2.3570 Accuracy=0.1033
+Optimization Finished!
+Test accuracy: 0.101
+Training with ADAM
+Epoch=1 cost=20.8219 Accuracy=0.1009
+Epoch=2 cost=2.3302 Accuracy=0.1030
+Epoch=3 cost=2.3314 Accuracy=0.1031
+Epoch=4 cost=2.3339 Accuracy=0.1017
+Epoch=5 cost=2.3300 Accuracy=0.1020
+Epoch=6 cost=2.3335 Accuracy=0.1041
+Epoch=7 cost=2.3344 Accuracy=0.1023
+Epoch=8 cost=2.3283 Accuracy=0.1008
+Epoch=9 cost=2.3311 Accuracy=0.1021
+Epoch=10 cost=2.3321 Accuracy=0.1023
+Epoch=11 cost=2.3333 Accuracy=0.1003
+Epoch=12 cost=2.3315 Accuracy=0.1021
+Epoch=13 cost=2.3323 Accuracy=0.1017
+Epoch=14 cost=2.3341 Accuracy=0.1008
+Epoch=15 cost=2.3325 Accuracy=0.1031
+Optimization Finished!
+Test accuracy: 0.1136
+Training with AdaGrad
+Epoch=1 cost=60.5561 Accuracy=0.4768
+Epoch=2 cost=1.1053 Accuracy=0.5971
+Epoch=3 cost=0.9447 Accuracy=0.6470
+Epoch=4 cost=0.8495 Accuracy=0.6799
+Epoch=5 cost=0.7976 Accuracy=0.6975
+Epoch=6 cost=0.7482 Accuracy=0.7159
+Epoch=7 cost=0.7102 Accuracy=0.7305
+Epoch=8 cost=0.6855 Accuracy=0.7390
+Epoch=9 cost=0.6422 Accuracy=0.7629
+Epoch=10 cost=0.6095 Accuracy=0.7806
+Epoch=11 cost=0.5810 Accuracy=0.7935
+Epoch=12 cost=0.5594 Accuracy=0.8071
+Epoch=13 cost=0.5394 Accuracy=0.8168
+Epoch=14 cost=0.5061 Accuracy=0.8305
+Epoch=15 cost=0.4861 Accuracy=0.8418
+Optimization Finished!
+Test accuracy: 0.8481
+
+******************************************************
+Second run
+******************************************************
+
+Training with SGD
+Epoch=1 cost=0.3427 Accuracy=0.8927
+Epoch=2 cost=0.1058 Accuracy=0.9667
+Epoch=3 cost=0.0700 Accuracy=0.9787
+Epoch=4 cost=0.0531 Accuracy=0.9828
+Epoch=5 cost=0.0399 Accuracy=0.9873
+Epoch=6 cost=0.0302 Accuracy=0.9904
+Epoch=7 cost=0.0222 Accuracy=0.9933
+Epoch=8 cost=0.0179 Accuracy=0.9942
+Epoch=9 cost=0.0132 Accuracy=0.9960
+Epoch=10 cost=0.0086 Accuracy=0.9975
+Epoch=11 cost=0.0058 Accuracy=0.9986
+Epoch=12 cost=0.0030 Accuracy=0.9995
+Epoch=13 cost=0.0027 Accuracy=0.9993
+Epoch=14 cost=0.0016 Accuracy=0.9997
+Epoch=15 cost=0.0008 Accuracy=1.0000
+Optimization Finished!
+Test accuracy: 0.985
+Training with MomentumSGD
+Epoch=1 cost=1.2197 Accuracy=0.6147
+Epoch=2 cost=1.9778 Accuracy=0.2741
+Epoch=3 cost=2.2864 Accuracy=0.1152
+Epoch=4 cost=2.3010 Accuracy=0.1145
+Epoch=5 cost=2.3127 Accuracy=0.1033
+Epoch=6 cost=2.3116 Accuracy=0.1056
+Epoch=7 cost=2.2826 Accuracy=0.1172
+Epoch=8 cost=2.3127 Accuracy=0.1023
+Epoch=9 cost=2.3122 Accuracy=0.1024
+Epoch=10 cost=2.3134 Accuracy=0.1031
+Epoch=11 cost=2.3115 Accuracy=0.1030
+Epoch=12 cost=2.3134 Accuracy=0.1021
+Epoch=13 cost=2.3129 Accuracy=0.1036
+Epoch=14 cost=2.3125 Accuracy=0.1037
+Epoch=15 cost=2.3131 Accuracy=0.1031
+Optimization Finished!
+Test accuracy: 0.1135
+Training with RMSProp
+Epoch=1 cost=1387.9222 Accuracy=0.1139
+Epoch=2 cost=6.3381 Accuracy=0.0998
+Epoch=3 cost=2.3550 Accuracy=0.1018
+Epoch=4 cost=2.3549 Accuracy=0.1015
+Epoch=5 cost=2.3558 Accuracy=0.1022
+Epoch=6 cost=2.3557 Accuracy=0.0996
+Epoch=7 cost=2.3553 Accuracy=0.1019
+Epoch=8 cost=2.3552 Accuracy=0.1030
+Epoch=9 cost=2.3556 Accuracy=0.1030
+Epoch=10 cost=2.3560 Accuracy=0.1005
+Epoch=11 cost=2.3554 Accuracy=0.1022
+Epoch=12 cost=2.3557 Accuracy=0.1030
+Epoch=13 cost=2.3567 Accuracy=0.1016
+Epoch=14 cost=2.3564 Accuracy=0.0988
+Epoch=15 cost=2.3564 Accuracy=0.0995
+Optimization Finished!
+Test accuracy: 0.1034
+Training with ADAM
+Epoch=1 cost=23.0345 Accuracy=0.1061
+Epoch=2 cost=2.3295 Accuracy=0.1031
+Epoch=3 cost=2.3309 Accuracy=0.1012
+Epoch=4 cost=2.3280 Accuracy=0.1007
+Epoch=5 cost=2.3295 Accuracy=0.1054
+Epoch=6 cost=2.3284 Accuracy=0.1010
+Epoch=7 cost=2.3330 Accuracy=0.1022
+Epoch=8 cost=2.3298 Accuracy=0.0984
+Epoch=9 cost=2.3298 Accuracy=0.1031
+Epoch=10 cost=2.3340 Accuracy=0.1022
+Epoch=11 cost=2.3280 Accuracy=0.1019
+Epoch=12 cost=2.3311 Accuracy=0.1024
+Epoch=13 cost=2.3322 Accuracy=0.1012
+Epoch=14 cost=2.3300 Accuracy=0.1015
+Epoch=15 cost=2.3305 Accuracy=0.1036
+Optimization Finished!
+Test accuracy: 0.0982
+Training with AdaGrad
+Epoch=1 cost=91.1968 Accuracy=0.3664
+Epoch=2 cost=1.3544 Accuracy=0.5139
+Epoch=3 cost=1.1384 Accuracy=0.5988
+Epoch=4 cost=0.9706 Accuracy=0.6511
+Epoch=5 cost=0.8745 Accuracy=0.6906
+Epoch=6 cost=0.7896 Accuracy=0.7137
+Epoch=7 cost=0.7205 Accuracy=0.7353
+Epoch=8 cost=0.6712 Accuracy=0.7558
+Epoch=9 cost=0.6266 Accuracy=0.7819
+Epoch=10 cost=0.5716 Accuracy=0.8312
+Epoch=11 cost=0.4783 Accuracy=0.8683
+Epoch=12 cost=0.4415 Accuracy=0.8800
+Epoch=13 cost=0.4067 Accuracy=0.8868
+Epoch=14 cost=0.3840 Accuracy=0.8925
+Epoch=15 cost=0.3719 Accuracy=0.8972
+Optimization Finished!
+Test accuracy: 0.8876
+(mod) 
+
+******************************************************
+Third run
+******************************************************
+
+Training with SGD
+Epoch=1 cost=0.3269 Accuracy=0.8985
+Epoch=2 cost=0.1038 Accuracy=0.9677
+Epoch=3 cost=0.0716 Accuracy=0.9770
+Epoch=4 cost=0.0515 Accuracy=0.9840
+Epoch=5 cost=0.0376 Accuracy=0.9881
+Epoch=6 cost=0.0301 Accuracy=0.9905
+Epoch=7 cost=0.0217 Accuracy=0.9930
+Epoch=8 cost=0.0175 Accuracy=0.9943
+Epoch=9 cost=0.0128 Accuracy=0.9959
+Epoch=10 cost=0.0100 Accuracy=0.9968
+Epoch=11 cost=0.0071 Accuracy=0.9980
+Epoch=12 cost=0.0044 Accuracy=0.9988
+Epoch=13 cost=0.0020 Accuracy=0.9997
+Epoch=14 cost=0.0013 Accuracy=0.9998
+Epoch=15 cost=0.0006 Accuracy=1.0000
+Optimization Finished!
+Test accuracy: 0.9839
+Training with MomentumSGD
+Epoch=1 cost=1.7740 Accuracy=0.3705
+Epoch=2 cost=1.9679 Accuracy=0.2248
+Epoch=3 cost=2.2222 Accuracy=0.1420
+Epoch=4 cost=2.2746 Accuracy=0.1240
+Epoch=5 cost=2.2845 Accuracy=0.1153
+Epoch=6 cost=2.3121 Accuracy=0.1052
+Epoch=7 cost=2.3118 Accuracy=0.1030
+Epoch=8 cost=2.3128 Accuracy=0.1027
+Epoch=9 cost=2.3132 Accuracy=0.1020
+Epoch=10 cost=2.3122 Accuracy=0.1035
+Epoch=11 cost=2.3103 Accuracy=0.1038
+Epoch=12 cost=2.3129 Accuracy=0.1042
+Epoch=13 cost=2.3133 Accuracy=0.1025
+Epoch=14 cost=2.3120 Accuracy=0.1028
+Epoch=15 cost=2.3145 Accuracy=0.1022
+Optimization Finished!
+Test accuracy: 0.101
+Training with RMSProp
+Epoch=1 cost=1239.5392 Accuracy=0.1208
+Epoch=2 cost=2.4583 Accuracy=0.1009
+Epoch=3 cost=2.3717 Accuracy=0.1019
+Epoch=4 cost=2.6437 Accuracy=0.1090
+Epoch=5 cost=2.3762 Accuracy=0.1064
+Epoch=6 cost=2.3580 Accuracy=0.0983
+Epoch=7 cost=2.3567 Accuracy=0.1001
+Epoch=8 cost=2.3544 Accuracy=0.1007
+Epoch=9 cost=2.3547 Accuracy=0.1009
+Epoch=10 cost=2.3575 Accuracy=0.0977
+Epoch=11 cost=2.3561 Accuracy=0.1008
+Epoch=12 cost=2.3562 Accuracy=0.1029
+Epoch=13 cost=2.3539 Accuracy=0.1028
+Epoch=14 cost=2.3540 Accuracy=0.1015
+Epoch=15 cost=2.3549 Accuracy=0.1027
+Optimization Finished!
+Test accuracy: 0.1135
+Training with ADAM
+Epoch=1 cost=32.8583 Accuracy=0.1007
+Epoch=2 cost=2.3301 Accuracy=0.1007
+Epoch=3 cost=2.3313 Accuracy=0.1017
+Epoch=4 cost=2.3312 Accuracy=0.1041
+Epoch=5 cost=2.3307 Accuracy=0.1023
+Epoch=6 cost=2.3309 Accuracy=0.0995
+Epoch=7 cost=2.3333 Accuracy=0.1020
+Epoch=8 cost=2.3326 Accuracy=0.0999
+Epoch=9 cost=2.3293 Accuracy=0.1014
+Epoch=10 cost=2.3294 Accuracy=0.1009
+Epoch=11 cost=2.3291 Accuracy=0.1033
+Epoch=12 cost=2.3296 Accuracy=0.1044
+Epoch=13 cost=2.3329 Accuracy=0.1021
+Epoch=14 cost=2.3325 Accuracy=0.1004
+Epoch=15 cost=2.3329 Accuracy=0.1031
+Optimization Finished!
+Test accuracy: 0.1135
+Training with AdaGrad
+Epoch=1 cost=45.5041 Accuracy=0.4638
+Epoch=2 cost=1.0515 Accuracy=0.6391
+Epoch=3 cost=0.8488 Accuracy=0.6992
+Epoch=4 cost=0.7509 Accuracy=0.7279
+Epoch=5 cost=0.6683 Accuracy=0.7636
+Epoch=6 cost=0.5991 Accuracy=0.7872
+Epoch=7 cost=0.5467 Accuracy=0.8025
+Epoch=8 cost=0.5137 Accuracy=0.8156
+Epoch=9 cost=0.4990 Accuracy=0.8239
+Epoch=10 cost=0.4712 Accuracy=0.8468
+Epoch=11 cost=0.4475 Accuracy=0.8646
+Epoch=12 cost=0.4265 Accuracy=0.8747
+Epoch=13 cost=0.4063 Accuracy=0.8816
+Epoch=14 cost=0.3868 Accuracy=0.8890
+Epoch=15 cost=0.3712 Accuracy=0.8944
+Optimization Finished!
+Test accuracy: 0.8879
